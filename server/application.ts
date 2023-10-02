@@ -5,7 +5,7 @@ import * as middlewares from "./middlewares.ts";
 import WebRouter from "./web/router.ts";
 import { ENVIRONMENT, IS_PRODUCTION, IS_READONLY, PORT } from "@constants";
 
-export const application = express() as express.Express & Express.Application;
+const application = express() as express.Express & Express.Application;
 
 application.set("port", PORT);
 application.set("environment", ENVIRONMENT);
@@ -23,10 +23,11 @@ application.set("views", "./views");
 application.set("view engine", "handlebars");
 application.use(express.static(IS_PRODUCTION ? "./src/public" : "./public"));
 
-application.locals.root = IS_PRODUCTION ? "" : "/";
 application.locals.title = "Duofiction";
 application.locals.isReadonly = application.get("is-readonly");
 application.locals.isNotReadonly = !application.get("is-readonly");
+application.locals.scripts = retrieveJavascriptFiles();
+application.locals.styles = retrieveCssFiles();
 
 application.use(express.json({ limit: "200mb" }));
 
@@ -34,3 +35,15 @@ application.use(ApiRouter.$PATH, ApiRouter);
 application.use(WebRouter);
 
 export default application;
+
+function retrieveJavascriptFiles() {
+  return {
+    main: Deno.readTextFileSync("./public/scripts/main.mjs"),
+  };
+}
+
+function retrieveCssFiles() {
+  return {
+    main: Deno.readTextFileSync("./public/styles/main.css"),
+  };
+}

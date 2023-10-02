@@ -33,3 +33,4 @@ export type * from "npm:@types/node@18.11.9";
 export type { Config as PrettierConfig } from "npm:prettier@3.0.3";
 export type { DenonConfig } from "https://deno.land/x/denon@2.5.0/mod.ts";
 export { slug } from "https://deno.land/x/slug@v1.1.0/mod.ts";
+export { Language, minify } from "https://deno.land/x/minifier@v1.1.1/mod.ts";
