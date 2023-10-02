@@ -1,4 +1,5 @@
 import https from "node:https";
+import http from "node:http";
 import application from "../application.ts";
 import { databaseClient } from "../database.ts";
 
@@ -13,7 +14,9 @@ if (!isProduction) {
   options.cert = Deno.readTextFileSync("./duofiction.chained.crt");
 }
 
-const server = https.createServer(options, application);
+const server = isProduction
+  ? http.createServer(options, application)
+  : https.createServer(options, application);
 
 server.on("close", handleClose);
 
