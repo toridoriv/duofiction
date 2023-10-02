@@ -1,4 +1,4 @@
-import { express } from "@deps";
+import { express, Language, minify } from "@deps";
 import ApiRouter from "./api/router.ts";
 import { mainLogger } from "./logger.ts";
 import * as middlewares from "./middlewares.ts";
@@ -38,12 +38,18 @@ export default application;
 
 function retrieveJavascriptFiles() {
   return {
-    main: Deno.readTextFileSync("./public/scripts/main.mjs"),
+    main: minify(
+      Language.JS,
+      Deno.readTextFileSync("./public/scripts/main.mjs"),
+    ),
   };
 }
 
 function retrieveCssFiles() {
   return {
-    main: Deno.readTextFileSync("./public/styles/main.css"),
+    main: minify(
+      Language.CSS,
+      Deno.readTextFileSync("./public/styles/main.css"),
+    ),
   };
 }
