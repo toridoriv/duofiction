@@ -23,7 +23,7 @@ application.set("views", "./views");
 application.set("view engine", "handlebars");
 application.use(express.static(IS_PRODUCTION ? "./src/public" : "./public"));
 
-application.locals.root = IS_PRODUCTION ? "/src" : "";
+application.locals.root = IS_PRODUCTION ? "" : "/";
 application.locals.title = "Duofiction";
 application.locals.isReadonly = application.get("is-readonly");
 application.locals.isNotReadonly = !application.get("is-readonly");
