@@ -22,4 +22,3 @@ jobs:
         with:
           project: duofiction # the name of the project on Deno Deploy
           entrypoint: server/bin/www.ts # the entrypoint to deploy
-          root: ./

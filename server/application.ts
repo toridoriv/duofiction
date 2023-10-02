@@ -21,7 +21,9 @@ application.use(middlewares.requestInspectionMiddleware);
 application.engine("handlebars", middlewares.viewsHandler.engine);
 application.set("views", "./views");
 application.set("view engine", "handlebars");
-application.use(express.static("./public"));
+application.use(
+  express.static(ENVIRONMENT === "DEVELOPMENT" ? "./public" : "./src/public"),
+);
 application.locals.title = "Duofiction";
 application.locals.isReadonly = application.get("is-readonly");
 application.locals.isNotReadonly = !application.get("is-readonly");
