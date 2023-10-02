@@ -1,12 +1,13 @@
 import { type express, Status, type ValueOf, z } from "@deps";
 import {
+  API_KEY,
   AVAILABLE_HTTP_METHOD,
   AVAILABLE_HTTP_METHODS_IN_READONLY,
   OPERATION_BY_METHOD,
   STATUS_TEXT,
 } from "@constants";
 import { anySchema } from "@schemas";
-import { MethodNotAllowed, ValidationError } from "@errors";
+import { Unauthorized, ValidationError } from "@errors";
 
 /* -------------------------------------------------------------------------- */
 /*                       Internal Constants and Classes                       */
@@ -90,27 +91,28 @@ class ApiEndpoint<
     this.$handlers.push(this.validateRequest);
 
     if (!AVAILABLE_HTTP_METHODS_IN_READONLY.includes(this.method)) {
-      this.$handlers.push(this.rejectIfReadonly);
+      this.$handlers.push(this.isAuthorized);
     }
   }
 
-  private rejectIfReadonly: ApiEndpointHandler<I["payload"]> = function (
+  private isAuthorized: ApiEndpointHandler<I["payload"]> = function (
     this: ApiEndpoint<O>,
     _req,
     res,
     next,
   ) {
-    if (res.app.get("is-readonly") === false) {
+    if (AVAILABLE_HTTP_METHODS_IN_READONLY.includes(this.method)) {
       return next();
     }
 
-    const response = this.getResponse(Status.MethodNotAllowed).setErrors(
-      new MethodNotAllowed(`Method ${this.method} not allowed.`),
-    );
+    const apiKey = res.getHeader("x-api-key");
 
-    res.setHeader(
-      "allow",
-      AVAILABLE_HTTP_METHODS_IN_READONLY.map((x) => x.toUpperCase()),
+    if (apiKey === API_KEY) {
+      return next();
+    }
+
+    const response = this.getResponse(Status.Unauthorized).setErrors(
+      new Unauthorized(`Not authorized`),
     );
 
     return res.status(response.status).json(response);

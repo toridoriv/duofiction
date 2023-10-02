@@ -22,3 +22,9 @@ export class MethodNotAllowed extends BaseError {
     super(detail, "4001", source);
   }
 }
+
+export class Unauthorized extends BaseError {
+  constructor(detail: string, readonly source?: Record<string, string>) {
+    super(detail, "4002", source);
+  }
+}

@@ -21,6 +21,8 @@ const ENVIRONMENT = z
 
 const LOCATION = z.string().url().parse(Deno.env.get("LOCATION"));
 
+const API_KEY = z.string().min(1).parse(Deno.env.get("API_KEY"));
+
 const AVAILABLE_HTTP_METHOD = Object.freeze({
   post: "post",
   get: "get",
@@ -107,6 +109,7 @@ const STATUS_TEXT = Object.freeze({
 });
 
 export {
+  API_KEY,
   AVAILABLE_HTTP_METHOD,
   AVAILABLE_HTTP_METHODS,
   AVAILABLE_HTTP_METHODS_IN_READONLY,
