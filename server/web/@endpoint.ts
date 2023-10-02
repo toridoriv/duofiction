@@ -70,16 +70,18 @@ class WebEndpoint<I extends SettingsIn> {
     type Params = Parameters<typeof handler>;
 
     const { [name]: wrappedHandler } = {
-      [name]: async function (req: Params[0], res: Params[1], next: Params[2]) {
+      [name]: async function (
+        this: WebEndpoint<I>,
+        req: Params[0],
+        res: Params[1],
+        next: Params[2],
+      ) {
         try {
           const r = await handler.call(this, req, res, next);
 
           return r;
         } catch (error) {
-          const response = this.getResponse(Status.InternalServerError)
-            .setErrors(error);
-
-          return res.status(response.status).json(response);
+          return next(error);
         }
       },
     };
