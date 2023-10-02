@@ -97,7 +97,7 @@ class ApiEndpoint<
 
   private isAuthorized: ApiEndpointHandler<I["payload"]> = function (
     this: ApiEndpoint<O>,
-    _req,
+    req,
     res,
     next,
   ) {
@@ -105,7 +105,7 @@ class ApiEndpoint<
       return next();
     }
 
-    const apiKey = res.getHeader("x-api-key");
+    const apiKey = req.get("x-api-key");
 
     if (apiKey === API_KEY) {
       return next();
