@@ -1,0 +1,3 @@
+[build]
+command = "deno run --allow-all server/bin/www.ts"
+publish = "."
