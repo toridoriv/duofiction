@@ -167,11 +167,11 @@ export class Logger {
   }
 
   public error(message: string, ...args: unknown[]) {
-    const [error, ...rest] = args;
+    const [error] = args;
 
     return this.log(Severity.Error, Level.Error, {
       message,
-      args: rest,
+      args,
       error: error as Log.Error,
     });
   }
