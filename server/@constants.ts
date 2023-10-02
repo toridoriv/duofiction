@@ -23,6 +23,8 @@ const LOCATION = z.string().url().parse(Deno.env.get("LOCATION"));
 
 const API_KEY = z.string().min(1).parse(Deno.env.get("API_KEY"));
 
+const IS_PRODUCTION = ENVIRONMENT === "PRODUCTION";
+
 const AVAILABLE_HTTP_METHOD = Object.freeze({
   post: "post",
   get: "get",
@@ -114,6 +116,7 @@ export {
   AVAILABLE_HTTP_METHODS,
   AVAILABLE_HTTP_METHODS_IN_READONLY,
   ENVIRONMENT,
+  IS_PRODUCTION,
   IS_READONLY,
   LOCATION,
   OPERATION_BY_METHOD,

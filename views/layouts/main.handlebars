@@ -8,7 +8,15 @@
   {{else}}
     <title>{{title}}</title>
   {{/if}}
-  <link rel="stylesheet" href="/styles/main.css" />
+  <link rel="icon" type="image/png" sizes="16x16"
+    href="{{root}}/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32"
+    href="{{root}}/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="192x192"
+    href="{{root}}/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512"
+    href="{{root}}/android-chrome-512x512.png">
+  <link rel="stylesheet" href="{{root}}/styles/main.css" />
 </head>
 
 <body class="subpixel-antialiased">
@@ -50,7 +58,7 @@
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
     crossorigin="anonymous"></script>
-  <script type="module" src="/scripts/main.mjs"></script>
+  <script type="module" src="{{root}}/scripts/main.mjs"></script>
 </body>
 
 </html>

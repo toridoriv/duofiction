@@ -3,13 +3,13 @@ import ApiRouter from "./api/router.ts";
 import { mainLogger } from "./logger.ts";
 import * as middlewares from "./middlewares.ts";
 import WebRouter from "./web/router.ts";
-import { ENVIRONMENT, IS_READONLY, PORT } from "@constants";
+import { ENVIRONMENT, IS_PRODUCTION, IS_READONLY, PORT } from "@constants";
 
 export const application = express() as express.Express & Express.Application;
 
 application.set("port", PORT);
 application.set("environment", ENVIRONMENT);
-application.set("is-production", ENVIRONMENT === "PRODUCTION");
+application.set("is-production", IS_PRODUCTION);
 application.set("is-readonly", IS_READONLY);
 
 application.logger = mainLogger;
@@ -21,9 +21,9 @@ application.use(middlewares.requestInspectionMiddleware);
 application.engine("handlebars", middlewares.viewsHandler.engine);
 application.set("views", "./views");
 application.set("view engine", "handlebars");
-application.use(
-  express.static(ENVIRONMENT === "DEVELOPMENT" ? "./public" : "./src/public"),
-);
+application.use(express.static(IS_PRODUCTION ? "./src/public" : "./public"));
+
+application.locals.root = IS_PRODUCTION ? "/src" : "";
 application.locals.title = "Duofiction";
 application.locals.isReadonly = application.get("is-readonly");
 application.locals.isNotReadonly = !application.get("is-readonly");
