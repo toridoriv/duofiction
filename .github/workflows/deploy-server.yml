@@ -22,3 +22,4 @@ jobs:
         with:
           project: duofiction # the name of the project on Deno Deploy
           entrypoint: main.ts # the entrypoint to deploy
+          root: public
