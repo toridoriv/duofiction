@@ -81,6 +81,8 @@ class WebEndpoint<I extends SettingsIn> {
 
           return r;
         } catch (error) {
+          res.app.logger.error("There was an error 😭", error);
+
           return next(error);
         }
       },
