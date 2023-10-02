@@ -1,6 +1,5 @@
 import { init } from "@endpoint";
 import { Fanfictions, z } from "@deps";
-import { fetchFromApi } from "@utils";
 
 const home = init({
   path: "/",
@@ -14,11 +13,9 @@ const home = init({
 
 export default home.registerHandler(
   async function mainHandler(this: typeof home, _req, res, _next) {
-    const response = await fetchFromApi<Fanfictions.Fanfiction[]>(
-      "/api/fanfictions",
-    );
-    const fanfictions = response.data;
+    const fanfictions = await res.app.db.fanfictions.find({}).limit(5)
+      .toArray();
 
-    return this.renderOk(res, { fanfictions: fanfictions || [] });
+    return this.renderOk(res, { fanfictions });
   },
 );
