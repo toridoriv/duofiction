@@ -14,7 +14,6 @@ const config: DenonConfig = {
     interval: 1_000,
     skip: ["**/.git/**", "**/bin/**"],
   },
-  cert: "./duofiction.chained.crt",
 };
 
 export default config;

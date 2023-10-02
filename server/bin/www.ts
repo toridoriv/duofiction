@@ -1,29 +1,16 @@
-import https from "node:https";
-import http from "node:http";
 import application from "../application.ts";
 import { databaseClient } from "../database.ts";
 
 application.db = databaseClient;
 
-const options: https.ServerOptions = {};
-const isProduction = application.get("is-production");
 const port = application.get("port");
 
-if (!isProduction) {
-  options.key = Deno.readTextFileSync("./duofiction.key");
-  options.cert = Deno.readTextFileSync("./duofiction.chained.crt");
-}
-
-const server = isProduction
-  ? http.createServer(options, application)
-  : https.createServer(options, application);
+const server = application.listen(port, handleListening);
 
 server.on("close", handleClose);
 
 Deno.addSignalListener("SIGTERM", handleKillSignal);
 Deno.addSignalListener("SIGINT", handleKillSignal);
-
-server.listen(port, handleListening);
 
 async function handleListening() {
   await databaseClient.connect();
