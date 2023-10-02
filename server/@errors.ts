@@ -28,3 +28,9 @@ export class Unauthorized extends BaseError {
     super(detail, "4002", source);
   }
 }
+
+export class UnknownFetchError extends BaseError {
+  constructor(detail: string, readonly source?: Record<string, string>) {
+    super(detail, "5000", source);
+  }
+}
