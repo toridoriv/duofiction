@@ -29,7 +29,7 @@ class WebEndpoint<I extends SettingsIn> {
   readonly path!: I["path"];
   readonly payload: PayloadSchema<I["payload"]>;
 
-  #handlers: WebEndpointHandler<I["payload"]>[] = [];
+  private $handlers: WebEndpointHandler<I["payload"]>[] = [];
 
   public constructor(input: I) {
     Object.assign(this, settings.parse(input));
@@ -39,11 +39,11 @@ class WebEndpoint<I extends SettingsIn> {
         ? rawPayload.extend(input.payload)
         : rawPayload) as PayloadSchema<I["payload"]>;
 
-    this.#handlers.push(this.validateRequest);
+    this.$handlers.push(this.validateRequest);
   }
 
   public get handlers() {
-    return this.#handlers.map((x) => x.bind(this));
+    return this.$handlers.map((x) => x.bind(this));
   }
 
   private validateRequest: WebEndpointHandler<I> = function (
@@ -63,8 +63,32 @@ class WebEndpoint<I extends SettingsIn> {
     return next();
   };
 
+  private wrapHandler(handler: WebEndpointHandler<I["payload"]>) {
+    const handlerName = handler.name.substring(0, 1).toUpperCase() +
+      handler.name.substring(1);
+    const name = `wrapped${handlerName}`;
+    type Params = Parameters<typeof handler>;
+
+    const { [name]: wrappedHandler } = {
+      [name]: async function (req: Params[0], res: Params[1], next: Params[2]) {
+        try {
+          const r = await handler.call(this, req, res, next);
+
+          return r;
+        } catch (error) {
+          const response = this.getResponse(Status.InternalServerError)
+            .setErrors(error);
+
+          return res.status(response.status).json(response);
+        }
+      },
+    };
+
+    return wrappedHandler;
+  }
+
   public registerHandler(handler: WebEndpointHandler<I["payload"]>) {
-    this.#handlers.push(handler);
+    this.$handlers.push(this.wrapHandler(handler));
 
     return this;
   }
@@ -106,7 +130,7 @@ export type WebEndpointHandler<T> = (
   req: ExpressWebRequest<T>,
   res: express.Response,
   next: express.NextFunction,
-) => void | Promise<void>;
+) => unknown | Promise<unknown>;
 
 // #endregion
 
