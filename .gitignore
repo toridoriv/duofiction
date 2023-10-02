@@ -1,0 +1,8 @@
+.tmp
+node_modules
+*.pem
+*.key
+*.csr*
+*.crt
+*.srl
+v3.ext

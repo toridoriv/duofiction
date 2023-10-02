@@ -1,0 +1,26 @@
+{
+  "[javascript][json][jsonc][typescript]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[handlebars]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "deno.cacheOnSave": true,
+  "deno.config": "./deno.json",
+  "deno.enable": true,
+  "deno.unstable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": false
+  },
+  "editor.formatOnSave": true,
+  "prettier.configPath": "./prettier.config.mjs",
+  "html.format.indentHandlebars": true,
+  "html.format.indentInnerHtml": false,
+  "editor.linkedEditing": true,
+  "html.format.templating": true,
+  "html.format.wrapLineLength": 80
+}

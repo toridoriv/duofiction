@@ -1,0 +1,38 @@
+{{#each fanfictions}}
+  <article class="card">
+    <div class="card-body">
+      <h3 class="card-title">
+        <a href="/{{id}}"
+          class="link-success link-underline link-underline-opacity-0 with-translation">
+          <span lang="{{language_code}}">
+            {{#if title.original.rich}}
+              {{{title.original.rich}}}
+            {{else}}
+              {{title.original.raw}}
+            {{/if}}
+          </span>
+          {{#if title.translations}}
+            <span lang="{{language_code}}">({{title.translations.0.raw}})</span>
+          {{/if}}
+        </a>
+      </h3>
+      <p class="card-text">
+        {{#if summary.original.rich}}
+          {{{summary.original.rich}}}
+        {{else}}
+          {{summary.original.raw}}
+        {{/if}}
+      </p>
+      {{#if title.translations}}
+        <p class="card-text" lang="{{language_code}}">
+          {{summary.translations.0.raw}}
+        </p>
+      {{/if}}
+      {{#with (getTags .) as | tags |}}
+        {{#each tags}}
+          {{> tag-button . }}
+        {{/each}}
+      {{/with}}
+    </div>
+  </article>
+{{/each}}

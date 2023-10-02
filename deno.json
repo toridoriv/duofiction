@@ -1,0 +1,62 @@
+{
+  "compilerOptions": {
+    "strictNullChecks": true,
+    "noImplicitThis": false
+  },
+  "fmt": {
+    "exclude": [
+      "node_modules"
+    ],
+    "indentWidth": 2,
+    "lineWidth": 80,
+    "proseWrap": "preserve",
+    "semiColons": true,
+    "singleQuote": false,
+    "useTabs": false
+  },
+  "imports": {
+    "@deps": "./deps.ts"
+  },
+  "lint": {
+    "exclude": [
+      "node_modules"
+    ],
+    "rules": {
+      "exclude": [
+        "no-empty-interface",
+        "no-namespace"
+      ]
+    }
+  },
+  "lock": "deno.lock",
+  "nodeModulesDir": true,
+  "scopes": {
+    "./node_modules/": {
+      "express-serve-static-core": "./typings/express-serve-static-core.d.ts"
+    },
+    "./server/api/": {
+      "@packageJson": "./server/packageJson.ts",
+      "@endpoint": "./server/api/@endpoint.ts"
+    },
+    "./server/web/": {
+      "@packageJson": "./server/packageJson.ts",
+      "@endpoint": "./server/web/@endpoint.ts"
+    },
+    "./server/": {
+      "@errors": "./server/@errors.ts",
+      "@schemas": "./server/@schemas.ts",
+      "@constants": "./server/@constants.ts",
+      "@lib/": "./lib/",
+      "@deps": "./server/@deps.ts",
+      "@utils": "./server/@utils.ts"
+    },
+    "./server/@deps.ts": {
+      "@deps": "./deps.ts"
+    },
+    "./bin/": {
+      "@deps": "./bin/@deps.ts",
+      "@utils": "./bin/@utils.ts",
+      "@lib/": "./lib/"
+    }
+  }
+}
