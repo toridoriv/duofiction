@@ -104,4 +104,5 @@ export type Settings = {
   prettyErrorTemplate: string;
   prettyHttpTemplate: string;
   useColors: boolean;
+  inspectOptions?: Deno.InspectOptions;
 };

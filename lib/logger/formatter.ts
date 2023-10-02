@@ -19,9 +19,9 @@ export function pretty(template: string, log: Log) {
   return substitute(template, log);
 }
 
-export function json(log: Log, useColors = false) {
-  if (useColors) {
-    return Deno.inspect(cloneObject(log), { colors: true });
+export function json(log: Log, options?: Deno.InspectOptions) {
+  if (options) {
+    return Deno.inspect(cloneObject(log), options);
   }
 
   return JSON.stringify(log, null, 2);

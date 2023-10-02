@@ -68,7 +68,7 @@ export class Logger {
       );
 
     const formatted = this.isProductionMode()
-      ? formatter.json(logObject, this.settings.useColors)
+      ? formatter.json(logObject, this.settings.inspectOptions)
       : formatter.pretty(
         this.getPrettyTemplate(level, options.response?.statusCode),
         logObject,
