@@ -1,6 +1,3 @@
-import { LOCATION } from "@constants";
-import { UnknownFetchError } from "@errors";
-
 /* -------------------------------------------------------------------------- */
 /*                       Internal Constants and Classes                       */
 /* -------------------------------------------------------------------------- */
@@ -11,24 +8,12 @@ import { UnknownFetchError } from "@errors";
 /*                                   Public                                   */
 /* -------------------------------------------------------------------------- */
 // #region
-export async function fetchFromApi<T>(
-  path: `/${string}`,
-  config?: RequestInit,
-): Promise<GenericApiResponse<T>> {
-  const response = await fetch(LOCATION + path, config);
-
-  if (!response.ok) {
-    throw new UnknownFetchError(
-      `There was a problem making a request to ${LOCATION + path}`,
-      {
-        status: String(response.status),
-        statusText: response.statusText,
-        body: await response.text(),
-      },
-    );
+export function shuffle<T extends SafeAny[]>(array: T) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
-
-  return response.json();
+  return array;
 }
 // #endregion
 

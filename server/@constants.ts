@@ -19,8 +19,6 @@ const ENVIRONMENT = z
   )
   .parse(Deno.env.get("ENVIRONMENT"));
 
-const LOCATION = z.string().url().parse(Deno.env.get("LOCATION"));
-
 const API_KEY = z.string().min(1).parse(Deno.env.get("API_KEY"));
 
 const IS_PRODUCTION = ENVIRONMENT === "PRODUCTION";
@@ -118,7 +116,6 @@ export {
   ENVIRONMENT,
   IS_PRODUCTION,
   IS_READONLY,
-  LOCATION,
   OPERATION_BY_METHOD,
   PORT,
   STATUS_TEXT,
