@@ -20,12 +20,14 @@ export class Fanfiction {
     kind: z.literal("fanfiction").default("fanfiction").catch("fanfiction"),
     origin_id: z.coerce.string().min(1),
     origin_url: z.string().url(),
+    source: z.string().default(""),
     language: LanguageNameSchema,
     language_code: LanguageCodeSchema,
     title: Localization.schema.transform(Localization.parse),
     summary: Localization.schema.transform(Localization.parse),
     fandom: z.string(),
-    relationship: z.array(z.string().min(1)).default([]),
+    relationship_characters: z.array(z.string().min(1)).default([]),
+    relationship: z.string().default(""),
     is_romantic: z.boolean().default(true),
     is_one_shot: z.boolean(),
     chapters: z.array(MultiChapter.schema).transform(toMultiChapter).or(
@@ -43,6 +45,14 @@ export class Fanfiction {
 
   constructor(properties: Fanfiction.input | Fanfiction.output) {
     Object.assign(this, Fanfiction.schema.parse(properties));
+
+    if (!this.source) {
+      this.source = new URL(this.origin_url).hostname;
+    }
+
+    if (this.relationship_characters.length > 0) {
+      this.relationship = this.relationship_characters.join("/");
+    }
   }
 
   public validate() {
