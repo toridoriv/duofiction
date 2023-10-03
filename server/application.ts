@@ -1,7 +1,8 @@
 import { express, Language, minify } from "@deps";
-import ApiRouter from "./api/router.ts";
 import { mainLogger } from "./logger.ts";
 import * as middlewares from "./middlewares.ts";
+import ApiRouter from "./api/router.ts";
+import AssetsRouter from "./assets-router.ts";
 import WebRouter from "./web/router.ts";
 import { ENVIRONMENT, IS_PRODUCTION, IS_READONLY, PORT } from "@constants";
 
@@ -32,6 +33,7 @@ application.locals.styles = retrieveCssFiles();
 application.use(express.json({ limit: "200mb" }));
 
 application.use(ApiRouter.$PATH, ApiRouter);
+application.use(AssetsRouter);
 application.use(WebRouter);
 
 export default application;
