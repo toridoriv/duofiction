@@ -1,17 +1,16 @@
-import type { express, Fanfictions, Logger } from "@deps";
+import type { express, Logger } from "@deps";
 import { databaseClient } from "./database.ts";
-import { GenericApiResponse } from "./api/@endpoint.ts";
+import { AnyApiResponse } from "./api/@endpoint.ts";
 
 declare global {
-  function fetch(input: "./api/fanfictions"): Promise<{
-    json: () => Promise<GenericApiResponse<Fanfictions.Fanfiction[]>>;
-  }>;
   /**
    * Instead of adding a `disable` directive, use this value
    * to indicate that an any type is expected that way purposely.
    */
   // deno-lint-ignore no-explicit-any
   type SafeAny = any;
+
+  export type ApiResponseType<T = unknown> = AnyApiResponse<T>;
 
   namespace Express {
     interface Application {

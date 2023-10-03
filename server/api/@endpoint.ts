@@ -226,6 +226,8 @@ export type AnyPayload = z.ZodObject<
  */
 export type AnyEndpoint = ApiEndpoint<SafeAny, SafeAny>;
 
+export type AnyApiResponse<T> = ApiResponse<T>;
+
 // #endregion
 
 /* -------------------------------------------------------------------------- */
