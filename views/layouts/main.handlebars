@@ -1,8 +1,10 @@
+<!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="NOINDEX, NOFOLLOW">
   {{#if subtitle}}
     <title>{{subtitle}} - {{title}}</title>
   {{else}}
@@ -13,9 +15,14 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="icon" type="image/x-icon" sizes="any" href="/favicon.ico">
   <link rel="manifest" href="/site.webmanifest">
-  <style>
-  {{{styles.main}}}
-  </style>
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.0/css/halfmoon.min.css">
+  <link rel="preload"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="/styles/main.css">
+  </noscript>
 </head>
 
 <body class="subpixel-antialiased">
@@ -53,11 +60,11 @@
     </div>
   </nav>
   <main class="container"> {{{body}}} </main>
-  <script
+  <script async
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
     crossorigin="anonymous"></script>
-  <script type="module">{{{scripts.main}}}</script>
+  <script type="module" src="/scripts/main.mjs"></script>
 </body>
 
 </html>

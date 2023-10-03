@@ -1,8 +1,8 @@
-import { express, Status } from "@deps";
+import { express, Language, minify, Status } from "@deps";
 
 const AssetsRouter = express.Router();
 
-enum Asset {
+export enum Asset {
   FaviconAndroid192 = "android-chrome-192x192.png",
   FaviconAndroid512 = "android-chrome-512x512.png",
   FaviconApple = "apple-touch-icon.png",
@@ -10,9 +10,12 @@ enum Asset {
   FaviconIco16 = "favicon-16x16.png",
   FaviconIco32 = "favicon-32x32.png",
   Manifest = "site.webmanifest",
+  ScriptMain = "scripts/main.mjs",
+  StyleMain = "styles/main.css",
+  RobotsTxt = "robots.txt",
 }
 
-const ASSET_FILES = {
+export const ASSET_FILES = {
   [Asset.FaviconAndroid192]: Deno.readFileSync(
     `./public/assets/${Asset.FaviconAndroid192}`,
   ),
@@ -32,6 +35,17 @@ const ASSET_FILES = {
     `./public/assets/${Asset.FaviconIco32}`,
   ),
   [Asset.Manifest]: Deno.readTextFileSync(`./public/assets/${Asset.Manifest}`),
+  [Asset.ScriptMain]: minify(
+    Language.JS,
+    Deno.readTextFileSync(`./public/${Asset.ScriptMain}`),
+  ),
+  [Asset.StyleMain]: minify(
+    Language.CSS,
+    Deno.readTextFileSync(`./public/${Asset.StyleMain}`),
+  ),
+  [Asset.RobotsTxt]: Deno.readTextFileSync(
+    `./public/assets/${Asset.RobotsTxt}`,
+  ),
 };
 
 const CONTENT_TYPE_BY_ASSET = {
@@ -42,6 +56,9 @@ const CONTENT_TYPE_BY_ASSET = {
   [Asset.FaviconIco16]: "image/png",
   [Asset.FaviconIco32]: "image/png",
   [Asset.Manifest]: "application/json",
+  [Asset.ScriptMain]: "application/javascript",
+  [Asset.StyleMain]: "text/css",
+  [Asset.RobotsTxt]: "text/plain",
 };
 
 function getHandler(
@@ -95,6 +112,21 @@ AssetsRouter.get(
 AssetsRouter.get(
   `/${Asset.Manifest}`,
   getHandler.bind(AssetsRouter, Asset.Manifest),
+);
+
+AssetsRouter.get(
+  `/${Asset.ScriptMain}`,
+  getHandler.bind(AssetsRouter, Asset.ScriptMain),
+);
+
+AssetsRouter.get(
+  `/${Asset.StyleMain}`,
+  getHandler.bind(AssetsRouter, Asset.StyleMain),
+);
+
+AssetsRouter.get(
+  `/${Asset.RobotsTxt}`,
+  getHandler.bind(AssetsRouter, Asset.RobotsTxt),
 );
 
 export default AssetsRouter;
