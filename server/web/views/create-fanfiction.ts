@@ -1,6 +1,5 @@
 import { init } from "@endpoint";
-import { Fanfictions, Languages, z } from "@deps";
-import { fetchFromApi } from "@utils";
+import { Languages, z } from "@deps";
 
 const createFanfiction = init({
   path: "/fanfictions/create",

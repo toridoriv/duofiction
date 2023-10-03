@@ -1,6 +1,6 @@
 import { create, difference, express, helmet } from "@deps";
 import { mainLogger } from "./logger.ts";
-import * as helpers from "./web/helpers/mod.ts";
+import { getAllAvailableTagsForFanfiction } from "./web/helpers/mod.ts";
 
 const requestsLogger = mainLogger.getSubLogger({ namespace: "requests" });
 
@@ -35,7 +35,9 @@ export const helmetMiddleware = helmet({
 });
 
 export const viewsHandler = create({
-  helpers,
+  helpers: {
+    getTags: getAllAvailableTagsForFanfiction,
+  },
 });
 
 declare global {

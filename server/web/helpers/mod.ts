@@ -1,1 +1,1 @@
-export * from "./fanfiction.ts";
+export * from "./tags.ts";
