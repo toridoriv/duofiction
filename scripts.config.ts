@@ -14,7 +14,7 @@ const config: DenonConfig = {
     interval: 1_000,
     skip: ["**/.git/**", "**/bin/**"],
     paths: ["server", "lib", "public"],
-    exts: ["ts", "css", "mjs"],
+    exts: ["ts", "css", "mjs", "json", "webmanifest"],
   },
 };
 

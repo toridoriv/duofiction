@@ -1,9 +1,7 @@
-@import "https://cdn.jsdelivr.net/npm/halfmoon@2.0.0/css/halfmoon.min.css";
-@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css";
 /* @import "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;800;900&display=swap"; */
 
 :root {
-  --bs-success: var(--bs-lime-700);
+  --bs-success: var(--bs-emerald-700);
 }
 
 nav.navbar {
@@ -30,46 +28,12 @@ article.card {
   font-size: medium;
 }
 
-/* 
-article.card .card-body p {
+.btn.tag {
+  font-family: "Victor Mono", Monaco, Lucida, monospace;
+  font-size: smaller;
+}
+
+.btn.tag.counter {
+  margin-right: 1em;
   margin-top: 1em;
 }
-
-article.card .list-group {
-  margin-top: 1em;
-}
-
-button.btn.tag {
-  font-family: "Victor Mono", monospace;
-  font-size: x-small;
-}
-
-i {
-  margin-right: 0.5em;
-}
-
-ruby > rt {
-  font-size: 60%;
-}
-
-*:lang(ja) {
-  line-height: 2.5;
-}
-
-#tags {
-  margin-bottom: 2em;
-}
-
-div.paragraph {
-  margin-top: 3em;
-  margin-bottom: 3em;
-  padding: 1em;
-}
-
-div.paragraph p:lang(ja) {
-  font-size: large;
-}
-
-.card-title span:lang(en) {
-  font-size: medium;
-} */
