@@ -16,5 +16,5 @@
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
   "display": "standalone",
-  "start_url": "http://localhost:3000"
+  "start_url": "https://duofiction.deno.dev"
 }
