@@ -4,30 +4,27 @@
       <h3 class="card-title">
         <a href="/fanfictions/{{id}}"
           class="link-success link-underline link-underline-opacity-0 with-translation">
-          <span lang="{{language_code}}">
-            {{#if title.original.rich}}
-              {{{title.original.rich}}}
-            {{else}}
-              {{title.original.raw}}
-            {{/if}}
-          </span>
-          {{#if title.translations}}
-            <span lang="{{language_code}}">({{title.translations.0.raw}})</span>
-          {{/if}}
+          {{#with title.original}}
+            <span lang="{{language_code}}">
+              {{getTextToDisplay .}}
+            </span>
+          {{/with}}
+          {{#with (getMainTranslation title)}}
+            <span lang="{{language_code}}">({{getTextToDisplay .}})</span>
+          {{/with}}
         </a>
       </h3>
-      <p class="card-text">
-        {{#if summary.original.rich}}
-          {{{summary.original.rich}}}
-        {{else}}
-          {{summary.original.raw}}
-        {{/if}}
-      </p>
-      {{#if title.translations}}
+      {{#with summary}}
         <p class="card-text" lang="{{language_code}}">
-          {{summary.translations.0.raw}}
+          {{getTextToDisplay original}}
         </p>
-      {{/if}}
+      {{/with}}
+      {{#with (getMainTranslation summary)}}
+        <p class="card-text translation text-secondary-emphasis text-opacity-75"
+          lang="{{language_code}}">
+          {{getTextToDisplay .}}
+        </p>
+      {{/with}}
       {{#with (getTags .) as | tags |}}
         {{#each tags}}
           {{> tag-button . }}
