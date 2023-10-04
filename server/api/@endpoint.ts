@@ -198,7 +198,7 @@ export function init<S extends SettingsIn>(options: S) {
  * @public
  */
 export type ExpressApiRequest<T, P extends InferPayload<T> = InferPayload<T>> =
-  express.Request<P["params"], SafeAny, undefined, P["query"]>;
+  express.Request<P["params"], SafeAny, P["body"], P["query"]>;
 
 /**
  * @public
