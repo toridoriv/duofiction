@@ -1,0 +1,16 @@
+<section>
+  {{#with fanfiction}}
+    {{#with title}}
+      <h1 class="text-center" lang="{{original.language_code}}">
+        {{#if original.rich}}
+          {{original.rich}}
+        {{else}}
+          {{original.raw}}
+        {{/if}}
+        {{#with translations}}
+          <h2 class="text-center" lang="{{0.language_code}}">{{0.raw}}</h2>
+        {{/with}}
+      </h1>
+    {{/with}}
+  {{/with}}
+</section>
