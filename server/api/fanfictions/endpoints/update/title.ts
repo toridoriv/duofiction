@@ -1,29 +1,23 @@
 import * as endpoint from "@endpoint";
-import { Fanfictions, z } from "@deps";
-import { addTitleTranslation } from "@queries";
+import { Fanfictions, UpdateResult, z } from "@deps";
 import { Status } from "@deps";
+import { addTitleTranslations } from "@queries";
 
 /* -------------------------------------------------------------------------- */
 /*                       Internal Constants and Classes                       */
 /* -------------------------------------------------------------------------- */
 // #region
-const update = endpoint.init({
-  path: "/:id",
+const $titleTranslations = endpoint.init({
+  path: "/:id/title/translations",
   resource: "fanfiction",
   method: "patch",
   payload: {
     params: z.object({
       id: z.string().uuid(),
     }),
-    body: z.object({
-      title: z
-        .object({
-          translations: z.array(Fanfictions.Text.schema).min(1),
-        })
-        .optional(),
-    }),
+    body: z.array(Fanfictions.Text.schema).min(1),
   },
-  data: z.boolean(),
+  data: z.custom<UpdateResult>(),
 });
 // #endregion
 
@@ -31,32 +25,19 @@ const update = endpoint.init({
 /*                                   Public                                   */
 /* -------------------------------------------------------------------------- */
 // #region
-export default update.registerHandler(async function mainHandler(
-  this: typeof update,
-  req,
-  res,
-  next,
-) {
-  const collection = res.app.db.fanfictions;
-  const id = req.params.id;
-  const update = req.body;
 
-  if (update.title) {
-    const result = await addTitleTranslation(
-      collection,
-      id,
-      update.title.translations,
-    );
-    const wasUpdated = result.modifiedCount > 0;
-    const response = this.getResponse(
-      wasUpdated ? Status.OK : Status.NotModified,
-    ).setData(wasUpdated);
+export const titleTranslations = $titleTranslations.registerHandler(
+  async function mainHandler(this: typeof $titleTranslations, req, res) {
+    const collection = res.app.db.fanfictions;
+    const id = req.params.id;
+    const translations = req.body;
+    const result = await addTitleTranslations(collection, id, translations);
+    const response = this.getResponse(Status.OK).setData(result);
 
     return res.status(response.status).json(response);
-  }
+  },
+);
 
-  return next();
-});
 // #endregion
 
 /* -------------------------------------------------------------------------- */

@@ -15,6 +15,7 @@ export {
   MongoClient,
   type MongoClientOptions,
   type OptionalUnlessRequiredId,
+  type UpdateResult,
 } from "npm:mongodb";
 export { encode, Hash } from "https://deno.land/x/checksum@1.2.0/mod.ts";
 export { deepMerge } from "https://deno.land/std@0.203.0/collections/mod.ts";
