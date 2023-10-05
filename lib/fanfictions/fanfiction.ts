@@ -43,6 +43,13 @@ export class Fanfiction {
     return new Fanfiction(properties);
   }
 
+  public static unsafeParse(properties: Fanfiction.output): Fanfiction {
+    return Object.create(
+      Fanfiction.prototype,
+      Object.getOwnPropertyDescriptors(properties),
+    );
+  }
+
   constructor(properties: Fanfiction.input | Fanfiction.output) {
     Object.assign(this, Fanfiction.schema.parse(properties));
 
