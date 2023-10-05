@@ -36,11 +36,13 @@
     },
     "./server/api/": {
       "@packageJson": "./server/packageJson.ts",
+      "@database": "./server/database.ts",
       "@endpoint": "./server/api/@endpoint.ts",
       "@queries": "./server/queries/mod.ts"
     },
     "./server/web/": {
       "@packageJson": "./server/packageJson.ts",
+      "@database": "./server/database.ts",
       "@endpoint": "./server/web/@endpoint.ts",
       "@queries": "./server/queries/mod.ts",
       "@helpers": "./server/web/helpers/mod.ts"

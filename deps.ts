@@ -5,16 +5,19 @@ export { default as express } from "npm:express@4";
 
 export { z } from "https://deno.land/x/zod@v3.22.2/mod.ts";
 export { Status } from "https://deno.land/std@0.203.0/http/mod.ts";
-export type { OptionalKeysOf, ValueOf } from "npm:type-fest";
+export type { OptionalKeysOf, SetRequired, ValueOf } from "npm:type-fest";
 export {
   BSON,
   type Collection,
   type Db,
   type Document,
   type Filter,
+  type FindOptions,
   MongoClient,
   type MongoClientOptions,
   type OptionalUnlessRequiredId,
+  type UpdateFilter,
+  type UpdateOptions,
   type UpdateResult,
 } from "npm:mongodb";
 export { encode, Hash } from "https://deno.land/x/checksum@1.2.0/mod.ts";

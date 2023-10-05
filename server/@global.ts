@@ -1,5 +1,5 @@
 import type { express, Logger } from "@deps";
-import { databaseClient } from "./database.ts";
+import { databaseClient, FanfictionRepository } from "./database.ts";
 import { AnyApiResponse } from "./api/@endpoint.ts";
 
 declare global {
@@ -15,6 +15,7 @@ declare global {
   namespace Express {
     interface Application {
       db: typeof databaseClient;
+      fanficRepository: FanfictionRepository;
       logger: Logger;
       get(name: "environment"): "DEVELOPMENT" | "PRODUCTION";
       get(name: "is-production"): boolean;

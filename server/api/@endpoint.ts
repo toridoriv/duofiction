@@ -78,7 +78,7 @@ class ApiEndpoint<
   readonly payload: PayloadSchema<I["payload"]>;
   readonly data!: I["data"];
 
-  readonly $handlers: ApiEndpointHandler<I["payload"]>[] = [];
+  readonly $handlers: ApiEndpointHandler<I["payload"], this>[] = [];
 
   public constructor({ payload, ...input }: I) {
     Object.assign(this, settings.parse(input));
@@ -95,8 +95,7 @@ class ApiEndpoint<
     }
   }
 
-  private isAuthorized: ApiEndpointHandler<I["payload"]> = function (
-    this: ApiEndpoint<O>,
+  private isAuthorized: ApiEndpointHandler<I["payload"], this> = function (
     req,
     res,
     next,
@@ -118,8 +117,7 @@ class ApiEndpoint<
     return res.status(response.status).json(response);
   };
 
-  private validateRequest: ApiEndpointHandler<I["payload"]> = function (
-    this: ApiEndpoint<O>,
+  private validateRequest: ApiEndpointHandler<I["payload"], this> = function (
     req,
     res,
     next,
@@ -139,7 +137,7 @@ class ApiEndpoint<
     return next();
   };
 
-  private wrapHandler(handler: ApiEndpointHandler<I["payload"]>) {
+  private wrapHandler(handler: ApiEndpointHandler<I["payload"], this>) {
     const handlerName = handler.name.substring(0, 1).toUpperCase() +
       handler.name.substring(1);
     const name = `wrapped${handlerName}`;
@@ -163,8 +161,14 @@ class ApiEndpoint<
     return wrappedHandler;
   }
 
-  public get handlers() {
-    return this.$handlers.map((x) => x.bind(this));
+  public get handlers(): ApiEndpointHandler<
+    I["payload"],
+    ApiEndpoint<O>
+  >[] {
+    return this.$handlers.map((x) => x.bind(this)) as ApiEndpointHandler<
+      I["payload"],
+      ApiEndpoint<O>
+    >[];
   }
 
   public getResponse(status: Status) {
@@ -208,7 +212,8 @@ export type ExpressApiResponse<T> = express.Response<ApiResponse<T>>;
 /**
  * @public
  */
-export type ApiEndpointHandler<T> = (
+export type ApiEndpointHandler<T, U> = (
+  this: U,
   req: ExpressApiRequest<T>,
   res: express.Response,
   next: express.NextFunction,

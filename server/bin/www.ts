@@ -1,7 +1,11 @@
 import application from "../application.ts";
-import { databaseClient } from "../database.ts";
+import { databaseClient, FanfictionRepository } from "../database.ts";
 
 application.db = databaseClient;
+
+application.fanficRepository = new FanfictionRepository(
+  databaseClient.fanfictions,
+);
 
 const port = application.get("port");
 
