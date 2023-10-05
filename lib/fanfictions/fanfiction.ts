@@ -2,6 +2,7 @@ import { z } from "@deps";
 import { LanguageCodeSchema, LanguageNameSchema } from "../language/mod.ts";
 import { MultiChapter, OneShot } from "./chapter.ts";
 import { Localization } from "./localization.ts";
+import { Author } from "./author.ts";
 
 export namespace Fanfiction {
   type schema = typeof Fanfiction.schema;
@@ -17,6 +18,7 @@ export class Fanfiction {
     id: z.string().uuid().default(createUuid),
     created_at: z.coerce.date().default(createTimestamp),
     updated_at: z.coerce.date().default(createTimestamp),
+    author: Author.schema,
     kind: z.literal("fanfiction").default("fanfiction").catch("fanfiction"),
     origin_id: z.coerce.string().min(1),
     origin_url: z.string().url(),
