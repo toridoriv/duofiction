@@ -1,6 +1,6 @@
 {
   "name": "@toridoriv/duofiction",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "homepage": "https://duofiction.deno.dev",
   "type": "module",
   "description": "An API Rest and a website to store and manage my personal collection of fanfictions and its translations.",
