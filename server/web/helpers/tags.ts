@@ -16,6 +16,7 @@ export enum TagName {
   Fandom = "fandom",
   Language = "language",
   Origin = "origin",
+  Author = "author",
 }
 
 export const QUERY_BY_TAG_NAME = Object.freeze({
@@ -23,6 +24,7 @@ export const QUERY_BY_TAG_NAME = Object.freeze({
   [TagName.Fandom]: "fandom=",
   [TagName.Language]: "language_code=",
   [TagName.Origin]: "origin=",
+  [TagName.Author]: "author=",
 });
 
 export const ICON_BY_TAG_NAME = Object.freeze({
@@ -30,6 +32,7 @@ export const ICON_BY_TAG_NAME = Object.freeze({
   [TagName.Fandom]: "scroll",
   [TagName.Language]: "globe",
   [TagName.Origin]: "link",
+  [TagName.Author]: "user",
 });
 
 export type Tag = {
@@ -92,10 +95,23 @@ export function getRelationshipTag(
   };
 }
 
+export function getAuthorTag(
+  authorName: string,
+  total?: number,
+): Tag {
+  return {
+    name: TagName.Author,
+    value: authorName,
+    icon: ICON_BY_TAG_NAME[TagName.Author],
+    href: getTagHref(TagName.Author, authorName),
+    total,
+  };
+}
+
 export function getAllAvailableTagsForFanfiction(
   fanfiction: Fanfictions.Fanfiction.output,
 ): Tag[] {
-  const tags: Tag[] = [];
+  const tags: Tag[] = [getAuthorTag(fanfiction.author.name)];
 
   if (fanfiction.fandom) {
     tags.push(getFandomTag(fanfiction.fandom));
