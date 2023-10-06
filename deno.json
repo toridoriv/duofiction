@@ -15,7 +15,7 @@
     "useTabs": false
   },
   "imports": {
-    "@deps": "./deps.ts"
+    "@deps": "./shared/dev-deps.ts"
   },
   "lint": {
     "exclude": [
@@ -33,6 +33,9 @@
   "scopes": {
     "./node_modules/": {
       "express-serve-static-core": "./typings/express-serve-static-core.d.ts"
+    },
+    "./lib/": {
+      "@deps": "./shared/deps.ts"
     },
     "./server/api/": {
       "@packageJson": "./server/packageJson.ts",
@@ -52,16 +55,18 @@
       "@schemas": "./server/@schemas.ts",
       "@constants": "./server/@constants.ts",
       "@lib/": "./lib/",
-      "@deps": "./server/@deps.ts",
+      "@deps": "./shared/deps.ts",
       "@utils": "./server/@utils.ts"
     },
-    "./server/@deps.ts": {
-      "@deps": "./deps.ts"
-    },
     "./bin/": {
-      "@deps": "./bin/@deps.ts",
       "@utils": "./bin/@utils.ts",
       "@lib/": "./lib/"
+    },
+    "./shared/": {
+      "@lib/": "./lib/"
     }
+  },
+  "tasks": {
+    "cache": "rm -rf node_modules && deno cache --lock-write shared/dev-deps.ts"
   }
 }

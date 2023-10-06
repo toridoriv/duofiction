@@ -1,4 +1,4 @@
-import { DenonConfig } from "./deps.ts";
+import type { DenonConfig } from "@deps";
 
 const config: DenonConfig = {
   scripts: {
