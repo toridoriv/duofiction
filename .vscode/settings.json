@@ -8,7 +8,7 @@
   "[handlebars]": {
     "editor.defaultFormatter": "vscode.html-language-features"
   },
-  "deno.cacheOnSave": true,
+  "deno.cacheOnSave": false,
   "deno.config": "./deno.json",
   "deno.enable": true,
   "deno.unstable": true,
