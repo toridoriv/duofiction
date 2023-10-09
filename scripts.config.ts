@@ -3,7 +3,7 @@ import type { DenonConfig } from "@deps";
 const config: DenonConfig = {
   scripts: {
     start: {
-      cmd: "server/bin/www.ts",
+      cmd: "app/main.ts",
       desc: "Run my webserver",
       watch: true,
     },
@@ -13,7 +13,7 @@ const config: DenonConfig = {
   watcher: {
     interval: 1_000,
     skip: ["**/.git/**", "**/bin/**"],
-    paths: ["server", "lib", "public"],
+    paths: ["app", "common"],
     exts: ["ts", "css", "mjs", "json", "webmanifest"],
   },
 };

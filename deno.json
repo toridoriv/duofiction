@@ -34,39 +34,45 @@
     "./node_modules/": {
       "express-serve-static-core": "./typings/express-serve-static-core.d.ts"
     },
-    "./lib/": {
-      "@deps": "./shared/deps.ts"
+    "./app/": {
+      "@common": "./app/core/mod.ts",
+      "@deps": "./app/core/deps.ts"
     },
-    "./server/api/": {
-      "@packageJson": "./server/packageJson.ts",
-      "@database": "./server/database.ts",
-      "@endpoint": "./server/api/@endpoint.ts",
-      "@queries": "./server/queries/mod.ts"
+    "./tmp.ts": {
+      "./": "./app/"
     },
-    "./server/web/": {
-      "@packageJson": "./server/packageJson.ts",
-      "@database": "./server/database.ts",
-      "@endpoint": "./server/web/@endpoint.ts",
-      "@queries": "./server/queries/mod.ts",
-      "@helpers": "./server/web/helpers/mod.ts"
-    },
-    "./server/": {
-      "@errors": "./server/@errors.ts",
-      "@schemas": "./server/@schemas.ts",
-      "@constants": "./server/@constants.ts",
-      "@lib/": "./lib/",
-      "@deps": "./shared/deps.ts",
-      "@utils": "./server/@utils.ts"
+    "./app/core/deps.ts": {
+      "@common/": "./common/core/",
+      "ansi-colors": "npm:ansi-colors@4",
+      "checksum": "https://deno.land/x/checksum@1.4.0/mod.ts",
+      "express": "npm:express@4",
+      "express:handlebars": "npm:express-handlebars@7",
+      "express:types": "npm:@types/express@4",
+      "minifier": "https://deno.land/x/minifier@v1.1.1/mod.ts",
+      "mongodb": "npm:mongodb@6",
+      "std/": "https://deno.land/std@0.203.0/"
     },
     "./bin/": {
-      "@utils": "./bin/@utils.ts",
-      "@lib/": "./lib/"
+      "@deps": "./bin/core/deps.ts"
     },
-    "./shared/": {
-      "@lib/": "./lib/"
+    "./bin/core/deps.ts": {
+      "@common/": "./common/core/",
+      "denon": "https://deno.land/x/denon@2.5.0/mod.ts",
+      "cliffy/": "https://deno.land/x/cliffy@v1.0.0-rc.3/",
+      "prettier": "npm:prettier@3.0.3"
+    },
+    "./common/core/deps.ts": {
+      "std/": "https://deno.land/std@0.203.0/",
+      "zod": "https://deno.land/x/zod@v3.22.4/mod.ts"
+    },
+    "./scripts.config.ts": {
+      "@deps": "./bin/core/deps.ts"
+    },
+    "./prettier.config.mjs": {
+      "@deps": "./bin/core/deps.ts"
     }
   },
   "tasks": {
-    "cache": "rm -rf node_modules && deno cache --lock-write shared/dev-deps.ts"
+    "cache": "rm -rf node_modules && deno cache --lock-write app/core/deps.ts && deno cache --lock-write bin/core/deps.ts && deno cache --lock-write typings/express-serve-static-core.d.ts"
   }
 }
