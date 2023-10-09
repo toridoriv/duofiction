@@ -9,6 +9,7 @@ import serverConfig from "./server.config.ts";
 import * as middleware from "./server.middlewares.ts";
 import AssetsRouter from "./routers/router.assets.ts";
 import WebpageRouter from "./routers/router.webpage.ts";
+import ApiRouter from "./routers/router.api.ts";
 
 const application = express();
 
@@ -30,6 +31,7 @@ application.set("view engine", ".hbs");
 application.set("views", "./app/views");
 application.use(AssetsRouter);
 application.use(WebpageRouter);
+application.use("/api", ApiRouter);
 
 const server = application.listen(serverConfig.port, handleListening);
 

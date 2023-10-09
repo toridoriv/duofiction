@@ -15,7 +15,7 @@ export {
 export { default as ansicolors } from "ansi-colors";
 export * as expressHandlebars from "express:handlebars";
 export * as minifier from "minifier";
-export { type WalkEntry, walkSync } from "std/fs/mod.ts";
+export { type WalkEntry, type WalkOptions, walkSync } from "std/fs/mod.ts";
 export { relative } from "std/path/relative.ts";
 export * as mongodb from "mongodb";
 export { encode, Hash } from "checksum";

@@ -23,8 +23,10 @@ const settingsSchema = sharedSettingsSchema.extend({
 /*                                   Public                                   */
 /* -------------------------------------------------------------------------- */
 // #region
-export class EndpointView<Settings extends SettingsIn> {
-  public static init<Settings extends SettingsIn>(settings: Settings) {
+export class EndpointView<Settings extends EndpointViewSettings> {
+  public static init<Settings extends EndpointViewSettings>(
+    settings: Settings,
+  ) {
     return new EndpointView(settings);
   }
 
@@ -50,6 +52,8 @@ export class EndpointView<Settings extends SettingsIn> {
     this.payload = rawPayloadSchema.extend(payload || {}) as PayloadSchema<
       Settings["payload"]
     >;
+
+    this.$handlers.push(this.validateRequest);
   }
 
   protected validateRequest: ViewEndpointHandler<
@@ -139,6 +143,8 @@ export type ViewEndpointHandler<T, U> = (
   res: express.Response,
   next: express.NextFunction,
 ) => unknown | Promise<unknown>;
+
+export type EndpointViewSettings = z.input<typeof settingsSchema>;
 // #endregion
 
 /* -------------------------------------------------------------------------- */
@@ -151,5 +157,5 @@ export type ViewEndpointHandler<T, U> = (
 /*                               Internal Types                               */
 /* -------------------------------------------------------------------------- */
 // #region
-type SettingsIn = z.input<typeof settingsSchema>;
+
 // #endregion
