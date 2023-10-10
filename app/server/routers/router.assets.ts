@@ -40,9 +40,8 @@ export const ASSET_FILES = {
   [Asset.Manifest]: Deno.readTextFileSync(
     `${PUBLIC_FILES_DIRECTORY}/assets/${Asset.Manifest}`,
   ),
-  [Asset.ScriptMain]: minifier.minify(
-    minifier.Language.JS,
-    Deno.readTextFileSync(`${PUBLIC_FILES_DIRECTORY}/${Asset.ScriptMain}`),
+  [Asset.ScriptMain]: Deno.readTextFileSync(
+    `${PUBLIC_FILES_DIRECTORY}/${Asset.ScriptMain}`,
   ),
   [Asset.StyleMain]: minifier.minify(
     minifier.Language.CSS,
