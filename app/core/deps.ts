@@ -6,6 +6,9 @@ export { default as express } from "express";
 
 export { difference, format as formatDate } from "std/datetime/mod.ts";
 export {
+  type Cookie,
+  getCookies,
+  getSetCookies,
   isErrorStatus,
   isInformationalStatus,
   isRedirectStatus,

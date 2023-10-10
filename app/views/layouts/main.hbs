@@ -60,10 +60,25 @@
             placeholder="Search tags" aria-label="Search" />
           <button class="btn btn-success" type="submit">Search</button>
         </form>
+        {{#if (isNotTrue @root.isLoggedIn)}}
+          <div class="d-flex ms-2">
+            <button class="btn btn-success" data-bs-toggle="modal"
+              data-bs-target="#login-modal">Login</button>
+          </div>
+        {{else}}
+          <div class="d-flex ms-2">
+            <form id="logout-form" action="/logout" method="post"
+              enctype="application/x-www-form-urlencoded">
+              <input type="hidden" name="redirectTo" id="logout-redirect-to">
+              <button class="btn btn-success" type="submit">Logout</button>
+            </form>
+          </div>
+        {{/if}}
       </div>
     </div>
   </nav>
   <main class="container"> {{{body}}} </main>
+  {{> login-modal }}
   <script async
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
