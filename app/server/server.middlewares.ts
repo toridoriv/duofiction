@@ -1,9 +1,5 @@
 import { difference, type express, expressHandlebars } from "@deps";
-import {
-  getAllAvailableTagsForFanfiction,
-  TextOutput,
-  TextWithTranslationsOutput,
-} from "@common";
+import { retrieveHelpers } from "./server.utils.ts";
 
 export function inspectRequest(
   req: express.Request,
@@ -11,6 +7,7 @@ export function inspectRequest(
   next: express.NextFunction,
 ) {
   req.id = globalThis.crypto.randomUUID();
+  res.duration = 0.1;
 
   const start = new Date();
 
@@ -27,38 +24,8 @@ export function inspectRequest(
 
 export const handlebars = expressHandlebars.create({
   extname: "hbs",
-  helpers: {
-    getTextToDisplay,
-    getMainTranslation,
-    getTags: getAllAvailableTagsForFanfiction,
-  },
+  helpers: await retrieveHelpers(),
 });
-
-// export function handleError(
-//   error: Error,
-//   req: express.Request,
-//   res: express.Response,
-//   next: express.NextFunction,
-// ) {}
-export function getTextToDisplay(text: TextOutput | TextOutput[]) {
-  if (typeof text === "undefined") {
-    return;
-  }
-
-  if (Array.isArray(text)) {
-    if (text.length === 0) {
-      return;
-    }
-
-    return text[0].rich || text[0].raw;
-  }
-
-  return text.rich || text.raw;
-}
-
-export function getMainTranslation(localized: TextWithTranslationsOutput) {
-  return localized.translations[0];
-}
 
 declare global {
   namespace Express {
