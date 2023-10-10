@@ -22,7 +22,7 @@ const walkOptions: WalkOptions = {
   skip: [/core\//, /views\//],
   includeDirs: false,
   exts: [".ts"],
-  match: [/\.endpoint/],
+  match: [/\.endpoint|\.view/],
 };
 
 export async function retrieveEndpoints<
