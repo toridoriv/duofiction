@@ -8,6 +8,7 @@ const projection = {
 };
 
 export default EndpointView.init({
+  method: "get",
   path: "/",
   view: "home",
   context: z.object({

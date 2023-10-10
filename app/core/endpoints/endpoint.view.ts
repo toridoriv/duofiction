@@ -1,4 +1,4 @@
-import { type express, SafeAny, Status, z } from "@deps";
+import { type express, Status, z } from "@deps";
 import {
   anySchema,
   type InferPayload,
@@ -6,7 +6,6 @@ import {
   rawPayloadSchema,
   sharedSettingsSchema,
 } from "./endpoint.utils.ts";
-import { HTTP_METHOD } from "./endpoint.const.ts";
 
 /* -------------------------------------------------------------------------- */
 /*                       Internal Constants and Classes                       */
@@ -30,7 +29,7 @@ export class EndpointView<Settings extends EndpointViewSettings> {
     return new EndpointView(settings);
   }
 
-  readonly method = HTTP_METHOD.get;
+  readonly method!: Settings["method"];
   readonly view!: Settings["view"];
   readonly context!: Settings["context"];
   readonly path!: Settings["path"];
@@ -125,17 +124,21 @@ export class EndpointView<Settings extends EndpointViewSettings> {
     );
   }
 
+  public renderNotFound(req: express.Request, res: express.Response) {
+    return res.status(Status.NotFound).render("not-found", { path: req.url });
+  }
+
   public renderNotOk(
     status: Status,
     res: express.Response,
-    context: z.input<Settings["context"]>,
+    message: string,
   ) {
-    return res.status(status).render(this.view, this.context.parse(context));
+    return res.status(status).render("error", { status, message });
   }
 }
 
 export type ExpressWebRequest<T, P extends InferPayload<T> = InferPayload<T>> =
-  express.Request<P["params"], SafeAny, undefined, P["query"]>;
+  express.Request<P["params"], undefined, P["body"], P["query"]>;
 
 export type ViewEndpointHandler<T, U> = (
   this: U,

@@ -1,4 +1,5 @@
 import { z } from "@deps";
+import { HTTP_METHOD } from "./endpoint.const.ts";
 
 export const anySchema = z.custom<z.ZodTypeAny>((x) => x instanceof z.Schema);
 
@@ -9,6 +10,7 @@ export const rawPayloadSchema = z.object({
 });
 
 export const sharedSettingsSchema = z.object({
+  method: z.nativeEnum(HTTP_METHOD),
   path: z.string().default("/"),
   payload: z.object({
     body: anySchema.optional(),

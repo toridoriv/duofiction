@@ -1,9 +1,5 @@
 import { type express, SafeAny, Status, z } from "@deps";
-import {
-  HTTP_METHOD,
-  OPERATION_BY_METHOD,
-  STATUS_TEXT,
-} from "./endpoint.const.ts";
+import { OPERATION_BY_METHOD, STATUS_TEXT } from "./endpoint.const.ts";
 import {
   anySchema,
   type InferPayload,
@@ -18,7 +14,6 @@ import {
 /* -------------------------------------------------------------------------- */
 // #region
 const settingsSchema = sharedSettingsSchema.extend({
-  method: z.nativeEnum(HTTP_METHOD),
   resource: z.string(),
   data: anySchema,
 });
