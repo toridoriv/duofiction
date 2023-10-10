@@ -225,7 +225,7 @@ class LogObject {
   }
 
   public setResponseFields(response: LogObject.Response) {
-    this["event.duration"] = response.duration;
+    this["event.duration"] = response.duration || 0.1;
     this["http.response.mime_type"] = response.get("content-type");
     this["http.response.status_code"] = response.statusCode;
 
