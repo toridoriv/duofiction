@@ -51,7 +51,7 @@ export const TagSchema = z.object({
 });
 
 export function getTagHref(name: TagName, ...values: string[]) {
-  return `/fanfictions?${QUERY_BY_TAG_NAME[name]}${
+  return `/fanfiction-catalog?${QUERY_BY_TAG_NAME[name]}${
     values.join(",").replaceAll(" ", "%20")
   }`;
 }
@@ -118,6 +118,10 @@ export function getAuthorTag(
 export function sortTagsDescending(tags: Tag[]) {
   return (tags as Required<Tag>[]).sort(isMoreFrequent);
 }
+
+export function sortTagsAlphabetically(tags: Tag[]) {
+  return (tags as Required<Tag>[]).sort(comesBeforeAlphabetically);
+}
 // #endregion
 
 /* -------------------------------------------------------------------------- */
@@ -126,6 +130,10 @@ export function sortTagsDescending(tags: Tag[]) {
 // #region
 function isMoreFrequent(tag1: Required<Tag>, tag2: Required<Tag>) {
   return tag2.total - tag1.total;
+}
+
+function comesBeforeAlphabetically(tag1: Required<Tag>, tag2: Required<Tag>) {
+  return tag1.value.localeCompare(tag2.value);
 }
 // #endregion
 
