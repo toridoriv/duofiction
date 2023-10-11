@@ -48,6 +48,7 @@ application.use(express.json());
 application.use(AssetsRouter);
 application.use(WebpageRouter);
 application.use("/api", ApiRouter);
+application.use(middleware.handleNotFound);
 
 await database.connect();
 

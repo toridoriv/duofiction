@@ -1,4 +1,4 @@
-import { difference, type express, expressHandlebars } from "@deps";
+import { difference, type express, expressHandlebars, Status } from "@deps";
 import { retrieveHelpers } from "./server.utils.ts";
 
 export function inspectRequest(
@@ -26,6 +26,10 @@ export const handlebars = expressHandlebars.create({
   extname: "hbs",
   helpers: await retrieveHelpers(),
 });
+
+export function handleNotFound(req: express.Request, res: express.Response) {
+  return res.status(Status.NotFound).render("not-found", { path: req.path });
+}
 
 declare global {
   namespace Express {
