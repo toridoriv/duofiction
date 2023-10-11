@@ -68,7 +68,6 @@ export const LiteFanfictionSchema = z.object({
   created_at: z.coerce.date().default(createTimestamp),
   updated_at: z.coerce.date().default(createTimestamp),
   author: AuthorSchema,
-  kind: z.literal("fanfiction").default("fanfiction").catch("fanfiction"),
   origin_id: z.coerce.string().min(1),
   origin_url: z.string().url(),
   source: z.string().default(""),
@@ -84,6 +83,7 @@ export const LiteFanfictionSchema = z.object({
 });
 
 export const RawFanfictionSchema = LiteFanfictionSchema.extend({
+  kind: z.literal("fanfiction").default("fanfiction").catch("fanfiction"),
   chapters: z.array(ChapterSchema).default([]),
 });
 

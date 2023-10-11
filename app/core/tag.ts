@@ -1,4 +1,4 @@
-import { FanfictionOutput } from "./fanfiction.ts";
+import { z } from "@deps";
 import { getLanguageName, LanguageCode } from "./localization.ts";
 
 /* -------------------------------------------------------------------------- */
@@ -36,13 +36,19 @@ export const ICON_BY_TAG_NAME = Object.freeze({
   [TagName.Author]: "user",
 });
 
-export type Tag = {
-  href: string;
-  icon: typeof ICON_BY_TAG_NAME[TagName];
-  name: TagName;
-  value: string;
-  total?: number;
-};
+export type Tag = z.output<typeof TagSchema>;
+
+export const TagSchema = z.object({
+  href: z.string().default(""),
+  icon: z.nativeEnum(ICON_BY_TAG_NAME),
+  name: z.nativeEnum(TagName),
+  value: z.string(),
+  total: z.number().optional(),
+}).transform((tag) => {
+  tag.href = getTagHref(tag.name, tag.value);
+
+  return tag;
+});
 
 export function getTagHref(name: TagName, ...values: string[]) {
   return `/fanfictions?${QUERY_BY_TAG_NAME[name]}${
@@ -107,28 +113,6 @@ export function getAuthorTag(
     href: getTagHref(TagName.Author, authorName),
     total,
   };
-}
-
-export function getAllAvailableTagsForFanfiction(
-  fanfiction: FanfictionOutput,
-): Tag[] {
-  const tags: Tag[] = [getAuthorTag(fanfiction.author.name)];
-
-  if (fanfiction.fandom) {
-    tags.push(getFandomTag(fanfiction.fandom));
-  }
-
-  if (fanfiction.relationship) {
-    tags.push(getRelationshipTag(fanfiction.relationship));
-  }
-
-  tags.push(getLanguageTag(fanfiction.language_code));
-
-  const url = new URL(fanfiction.origin_url);
-
-  tags.push(getOriginTag(url.hostname));
-
-  return tags;
 }
 
 export function sortTagsDescending(tags: Tag[]) {
