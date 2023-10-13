@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "strictNullChecks": true,
-    "noImplicitThis": false
+    "exactOptionalPropertyTypes": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true
   },
   "fmt": {
     "exclude": [
@@ -31,15 +32,9 @@
   "lock": "deno.lock",
   "nodeModulesDir": true,
   "scopes": {
-    "./node_modules/": {
-      "express-serve-static-core": "./typings/express-serve-static-core.d.ts"
-    },
     "./app/": {
       "@common": "./app/core/mod.ts",
       "@deps": "./app/core/deps.ts"
-    },
-    "./tmp.ts": {
-      "./": "./app/"
     },
     "./app/core/deps.ts": {
       "@common/": "./common/core/",
@@ -57,18 +52,21 @@
     },
     "./bin/core/deps.ts": {
       "@common/": "./common/core/",
-      "denon": "https://deno.land/x/denon@2.5.0/mod.ts",
       "cliffy/": "https://deno.land/x/cliffy@v1.0.0-rc.3/",
+      "denon": "https://deno.land/x/denon@2.5.0/mod.ts",
       "prettier": "npm:prettier@3.0.3"
     },
     "./common/core/deps.ts": {
       "std/": "https://deno.land/std@0.203.0/",
       "zod": "https://deno.land/x/zod@v3.22.4/mod.ts"
     },
-    "./scripts.config.ts": {
-      "@deps": "./bin/core/deps.ts"
+    "./node_modules/": {
+      "express-serve-static-core": "./typings/express-serve-static-core.d.ts"
     },
     "./prettier.config.mjs": {
+      "@deps": "./bin/core/deps.ts"
+    },
+    "./scripts.config.ts": {
       "@deps": "./bin/core/deps.ts"
     }
   },
