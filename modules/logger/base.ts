@@ -18,7 +18,6 @@ import {
   isSuccessfulStatus,
 } from "@modules/logger/deps.ts";
 import { SafeAny } from "@modules/typings/mod.ts";
-import { Logger } from "https://deno.land/std@0.97.0/log/mod.ts";
 
 type LogOptions = {
   message: string;
