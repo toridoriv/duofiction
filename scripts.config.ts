@@ -1,11 +1,9 @@
-import "https://deno.land/std@0.203.0/dotenv/load.ts";
-
-import type { DenonConfig } from "@deps";
+import type { DenonConfig } from "https://deno.land/x/denon@2.5.0/mod.ts";
 
 const config: DenonConfig = {
   scripts: {
     start: {
-      cmd: `deno run --location ${Deno.env.get("LOCATION")} app/main.ts`,
+      cmd: `deno run app/main.ts`,
       desc: "Run my webserver",
       watch: true,
     },
