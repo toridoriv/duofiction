@@ -411,9 +411,15 @@ export type DeepPartial<T> = T extends object ? {
 /* -------------------------------------------------------------------------- */
 // #region
 
+type BaseDotNotationArrayKey<K extends string> =
+  | `${K}.${number}`
+  | `${K}.$[elem]`;
+
 type DotNotationPathOf<T> = {
-  [K in keyof T & string]: T[K] extends Array<infer U>
-    ? K | `${K}.${number}` | `${K}.${number}.${ArrayDotNotation<U>}`
+  [K in keyof T & string]: T[K] extends Array<infer U> ?
+      | K
+      | BaseDotNotationArrayKey<K>
+      | `${BaseDotNotationArrayKey<K>}.${ArrayDotNotation<U>}`
     : T[K] extends Record<string, unknown>
     // @ts-ignore: ¯\_(ツ)_/¯
       ? `${K}` | `${K}.${DotNotationPathOf<T[K]>}`
@@ -426,8 +432,9 @@ type DotNotationDataTypeOf<
 > = P extends `${infer K}.${infer R}`
   // @ts-ignore: ¯\_(ツ)_/¯
   ? DotNotationDataTypeOf<T[K], R>
-  : P extends `${infer K}`
   // @ts-ignore: ¯\_(ツ)_/¯
-    ? T[K]
+  : P extends `${infer K}` ? K extends "$[elem]" ? T[number]
+      // @ts-ignore: ¯\_(ツ)_/¯
+    : T[K]
   : never;
 // #endregion
