@@ -52,8 +52,9 @@ export type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
  * type RecursivePerson = ExpandRecursively<Person>;
  * ```
  */
-export type ExpandRecursively<T> = T extends object
-  ? T extends infer O ? { [K in keyof O]: ExpandRecursively<O[K]> }
+export type ExpandRecursively<T, Unless = null> = T extends object
+  ? T extends infer O
+    ? O extends Unless ? O : { [K in keyof O]: ExpandRecursively<O[K], Unless> }
   : never
   : T;
 
