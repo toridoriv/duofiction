@@ -294,16 +294,109 @@ export type ToDotNotation<T> = {
   [K in DotNotationPathOf<T>]: DotNotationDataTypeOf<T, K>;
 };
 
+/**
+ * Converts an array type T to a dot-notation string type representing
+ * the array elements and indices.
+ *
+ * Array elements are recursively converted to dot-notation as well.
+ *
+ * @example
+ *
+ * ```ts
+ * type Address = {
+ *   street: string;
+ *   number: number;
+ *   country: string;
+ * }
+ *
+ * type Person = { name: string; address: Address };
+ * type ArrayDotNotation = ArrayDotNotation<Array>
+ * type PeopleDotNotation = ArrayDotNotation<People>;
+ * // `${number}.name` | `${number}.address` | `${number}.address.number` | `${number}.address.street`
+ * // `${number}.address.country` | "$[elem].name" | "$[elem].address" | "$[elem].address.number"
+ * // "$[elem].address.street" | "$[elem].address.country"
+ * ```
+ */
 export type ArrayDotNotation<T> = T extends Array<infer U>
-  ? `${number}${ArrayDotNotation<U>}`
+  ? `${number | "$[elem]"}.${ArrayDotNotation<U>}`
   : T extends Record<string, unknown> ? `${DotNotationPathOf<T>}`
   : never;
 
-export type ExcludeDotNotation<T> = {
-  [K in keyof T]: K extends `${string}.${string}` ? never : K;
-}[keyof T];
+/**
+ * Joins the elements of an array T into a string, delimited by U.
+ *
+ * @example
+ *
+ * ```ts
+ * type Letters = ['a', 'b', 'c']
+ * type Joined = Join<Letters, '.'> // 'a.b.c'
+ * ```
+ */
+export type Join<T extends SafeAny[], U extends string | number> = T extends [
+  infer F,
+  ...infer R,
+] ? R["length"] extends 0 ? `${F & string}`
+  : `${F & string}${U}${Join<R, U>}`
+  : never;
 
-export type FromDotNotation<T> = Pick<T, ExcludeDotNotation<T>>;
+/**
+ * Converts a type with dot-notation keys back to a nested object type.
+ *
+ * This reverses the transformation done by {@link ToDotNotation}.
+ *
+ * @example
+ *
+ * ```ts
+ * type PersonDotNotation = {
+ *   name: string;
+ *   "address.street": string;
+ * }
+ *
+ * type Person = FromDotNotation<PersonDotNotation>
+ *
+ * // Person = {
+ * //   name: string;
+ * //   address: {
+ * //     street: string;
+ * //   }
+ * // }
+ * ```
+ */
+export type FromDotNotation<T> = ExpandRecursively<
+  {
+    [K in keyof T as SplitDotted<K>[0]]: HasLengthZero<
+      Tail<SplitDotted<K>>
+    > extends true ? T[K]
+      : Tail<SplitDotted<K>>[0] extends `${number}` ? T[K]
+      : FromDotNotation<{ [SubKey in Join<Tail<SplitDotted<K>>, ".">]: T[K] }>;
+  }
+>;
+
+/**
+ * Excludes any properties with `never` type from type T.
+ *
+ * This is useful for cleaning up types after mapped types that may
+ * introduce `never` properties.
+ *
+ * @example
+ *
+ * ```ts
+ * type Test = {
+ *   foo: string;
+ *   bar?: never;
+ * }
+ *
+ * type Clean = ExcludeNever<Test>;
+ * // { foo: string }
+ * ```
+ */
+export type ExcludeNever<T> = {
+  [K in keyof T as T[K] extends never ? never : K]:
+    Exclude<T[K], undefined> extends Array<infer E> ? Array<ExcludeNever<E>>
+      : Exclude<T[K], undefined> extends Record<string, SafeAny>
+        ? ExcludeNever<T[K]>
+      : T[K];
+};
 
 /* -------------------------------------------------------------------------- */
 /*                               Internal Types                               */
