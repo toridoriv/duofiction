@@ -1,5 +1,5 @@
 {
-  "[javascript][json][jsonc][typescript]": {
+  "[javascript][typescriptreact][json][jsonc][typescript]": {
     "editor.defaultFormatter": "denoland.vscode-deno"
   },
   "[html]": {

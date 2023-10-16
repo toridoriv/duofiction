@@ -35,6 +35,8 @@ function getDependencyFiles(isDevelopment: boolean) {
     match: [
       /deps\./,
       new RegExp("express-serve-static-core.d.ts"),
+      new RegExp("dev.ts"),
+      new RegExp("^main.ts"),
     ],
     skip,
   };

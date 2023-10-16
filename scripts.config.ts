@@ -3,7 +3,7 @@ import type { DenonConfig } from "https://deno.land/x/denon@2.5.0/mod.ts";
 const config: DenonConfig = {
   scripts: {
     start: {
-      cmd: `deno run app/main.ts`,
+      cmd: `deno run dev.ts`,
       desc: "Run my webserver",
       watch: true,
     },
@@ -13,8 +13,8 @@ const config: DenonConfig = {
   watcher: {
     interval: 1_000,
     skip: ["**/.git/**", "**/bin/**"],
-    paths: ["app", "common"],
-    exts: ["ts", "css", "mjs", "json", "webmanifest"],
+    paths: ["islands", "modules", "routes", "components"],
+    exts: ["ts", "css", "mjs", "json", "webmanifest", "tsx"],
   },
 };
 
