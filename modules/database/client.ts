@@ -11,6 +11,8 @@ export interface ClientOptions extends mongodb.MongoClientOptions {
 }
 
 export class Client extends mongodb.MongoClient {
+  #isConnected = false;
+
   readonly logger: ClientOptions["logger"];
 
   constructor(readonly uri: string, options: Partial<ClientOptions>) {
@@ -22,15 +24,21 @@ export class Client extends mongodb.MongoClient {
 
     this.on("open", () => {
       this.logger.info("Connected to the database.");
+      this.#isConnected = true;
     });
 
     this.on("close", () => {
       this.logger.info("Disconnected from the database.");
+      this.#isConnected = false;
     });
 
     this.on("error", (err) => {
       this.logger.error("There was an unexpected database error", err);
     });
+  }
+
+  public get isConnected() {
+    return this.#isConnected;
   }
 
   public close(force?: boolean): Promise<void> {

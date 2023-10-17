@@ -17,7 +17,14 @@ export namespace Projection {
   export type Include = 1;
   export type Exclude = 0;
 
-  export type Id = { _id?: Include | Exclude };
+  export const Include: Include = 1;
+  export const Exclude: Exclude = 0;
+
+  export type BaseProperties = {
+    _id?: Include | Exclude;
+    created_at?: Exclude;
+    updated_at?: Exclude;
+  };
 
   export type Document<T extends BaseDocument> = {
     [K in keyof ToDotNotation<T>]?: Exclude;
@@ -26,7 +33,7 @@ export namespace Projection {
   export type Infer<
     T extends BaseDocument,
     P extends Projection<T>,
-  > = ExcludeNever<InferHelper<T, P>>;
+  > = CustomExpand<ExcludeNever<InferHelper<T, P>>>;
 
   type InferHelper<
     T,
@@ -52,7 +59,7 @@ export namespace Projection {
 
 export type Projection<T> = CustomExpand<
   // @ts-ignore: ¯\_(ツ)_/¯
-  Projection.Id & Projection.Document<T>
+  Projection.BaseProperties & Projection.Document<T>
 >;
 
 export namespace Query {

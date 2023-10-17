@@ -12,6 +12,7 @@ import {
 import { LogObject } from "@modules/logger/log-object.ts";
 import {
   ansicolors,
+  deepMerge,
   isErrorStatus,
   isInformationalStatus,
   isRedirectStatus,
@@ -114,6 +115,15 @@ abstract class BaseLogger {
       args,
       error: error as LogObject.Error,
     });
+  }
+
+  public getSubLogger(
+    settings: Partial<SettingsInput>,
+  ) {
+    const newSettings = deepMerge(this.settings, settings);
+
+    // @ts-ignore: ¯\_(ツ)_/¯
+    return new this.constructor(newSettings) as typeof this;
   }
 }
 

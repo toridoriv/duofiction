@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "exactOptionalPropertyTypes": true,
+    "exactOptionalPropertyTypes": false,
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
     "noImplicitThis": true,
@@ -25,6 +25,7 @@
     "@preact/signals": "https://esm.sh/*@preact/signals@1.2.1",
     "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.0",
     "@routes/": "./routes/",
+    "@utils/": "./utils/",
     "preact": "https://esm.sh/preact@10.18.1",
     "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.2.2",
     "preact/": "https://esm.sh/preact@10.18.1/"
@@ -50,6 +51,7 @@
   "tasks": {
     "cache": "deno task manage cache -d",
     "cache:prod": "deno task manage cache",
-    "manage": "deno run --allow-all bin/manage.ts"
+    "manage": "deno run --allow-all bin/manage.ts",
+    "start": "deno run -A --watch=static/,routes/,components/,utils/ dev.ts"
   }
 }
