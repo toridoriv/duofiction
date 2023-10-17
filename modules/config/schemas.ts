@@ -12,8 +12,6 @@ export const EnvironmentSchema = z.object({
   MONGODB_URI: UrlSchema.default("mongodb://localhost"),
   ADMIN_EMAILS: z.preprocess(split, z.array(EmailSchema)),
   ADMIN_PASSWORDS: z.preprocess(split, z.array(NotEmptyStringSchema)),
-  LOCATION: UrlSchema,
-  LOG_LEVEL: z.string().default("INFO"),
   PRETTY_LOG: z.coerce.boolean().default(false),
 });
 
