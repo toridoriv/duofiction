@@ -1,4 +1,5 @@
 import { AppProps } from "$fresh/server.ts";
+import { Partial } from "$fresh/runtime.ts";
 import { Nav } from "@components/nav.tsx";
 import { Favicon, PreloadedStylesheet } from "@components/head.tsx";
 import config from "@modules/config/mod.ts";
@@ -57,11 +58,11 @@ const stylesheets = [
 ];
 
 export default function App(
-  { Component, state, data }: AppProps<AppProperties, AppProperties>,
+  { Component, state }: AppProps<AppProperties, AppProperties>,
 ) {
-  console.log(Component.displayName);
-  console.log(state);
-  const title = data.subtitle ? `${data.subtitle} - Duofiction` : "Duofiction";
+  const title = state.subtitle
+    ? `${state.subtitle} - Duofiction`
+    : "Duofiction";
 
   return (
     <html lang="en" data-bs-theme="dark" data-bs-core="modern">
@@ -82,7 +83,9 @@ export default function App(
       <body class="subpixel-antialiased">
         {Nav(links)}
         <main class="container">
-          <Component />
+          <Partial name="main-content">
+            <Component />
+          </Partial>
         </main>
         <script
           async

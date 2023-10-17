@@ -33,6 +33,7 @@ article.card {
 .btn.tag {
   font-family: "Victor Mono", Monaco, Lucida, monospace;
   font-size: smaller;
+  margin-right: 0.6em;
 }
 
 .btn.tag.counter {
@@ -42,4 +43,8 @@ article.card {
 
 .card .translation {
   font-size: small;
+}
+
+span[lang] {
+  margin-right: 0.6em;
 }
