@@ -1,5 +1,4 @@
 import { Handlers } from "$fresh/server.ts";
-import { FanfictionAttributesOutput } from "@modules/fanfiction/mod.ts";
 import { client, SortOrder, Status, z } from "@utils/mod.ts";
 
 const ListQuerySchema = z.object({
