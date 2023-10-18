@@ -33,7 +33,11 @@ export function FanfictionCard({ fanfiction, ...props }: FanfictionCardProps) {
               "card-text translation text-secondary-emphasis text-opacity-75",
           },
         })}
-        {tags.map(TagButton)}
+      </div>
+      <div class="card-footer">
+        <p style="text-align:center;">
+          {tags.map(TagButton)}
+        </p>
       </div>
     </article>
   );

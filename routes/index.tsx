@@ -1,11 +1,11 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { FanfictionCard } from "@components/fanfiction-card.tsx";
 import { FanfictionAttributesOutput } from "@modules/fanfiction/mod.ts";
-import { logger } from "@utils/mod.ts";
+import { handler as FanfictionAttributesHandler } from "./api/fanfiction-attributes/index.ts";
 
-interface HomeState {
+type HomeState = {
   subtitle: string;
-}
+};
 
 interface HomeData {
   recentlyAdded: FanfictionAttributesOutput[];
@@ -15,18 +15,28 @@ interface HomeData {
 export const handler: Handlers<HomeData, HomeState> = {
   async GET(req, ctx) {
     const baseUrl = new URL(req.url);
-    const recentlyAddedUrl = new URL(
-      "/api/fanfiction-attributes?limit=3&sort=created_at&order=DESCENDING",
-      baseUrl.origin,
+    const recentlyAddedRequest = new Request(
+      new URL(
+        "/api/fanfiction-attributes?limit=3&sort=created_at&order=DESCENDING",
+        baseUrl.origin,
+      ),
     );
-    const recentlyAddedResponse = await fetch(recentlyAddedUrl);
+    const recentlyAddedResponse = await FanfictionAttributesHandler.GET(
+      recentlyAddedRequest,
+      ctx,
+    );
     const recentlyAdded = await recentlyAddedResponse.json();
 
-    const recentlyUpdatedUrl = new URL(
-      "/api/fanfiction-attributes?limit=3&sort=updated_at&order=DESCENDING",
-      baseUrl.origin,
+    const recentlyUpdatedRequest = new Request(
+      new URL(
+        "/api/fanfiction-attributes?limit=3&sort=updated_at&order=DESCENDING",
+        baseUrl.origin,
+      ),
     );
-    const recentlyUpdatedResponse = await fetch(recentlyUpdatedUrl);
+    const recentlyUpdatedResponse = await FanfictionAttributesHandler.GET(
+      recentlyUpdatedRequest,
+      ctx,
+    );
     const recentlyUpdated = await recentlyUpdatedResponse.json();
 
     ctx.state.subtitle = "Home";

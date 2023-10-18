@@ -9,7 +9,7 @@ const ListQuerySchema = z.object({
   order: z.enum(["ASCENDING", "DESCENDING"]).default("ASCENDING"),
 });
 
-export const handler: Handlers<FanfictionAttributesOutput | null> = {
+export const handler: Required<Pick<Handlers, "GET">> = {
   async GET(req, _ctx) {
     const url = new URL(req.url);
     const query = ListQuerySchema.parse(
@@ -19,20 +19,21 @@ export const handler: Handlers<FanfictionAttributesOutput | null> = {
       ? { $expr: { $gt: ["$updated_at", "$created_at"] } }
       : {};
 
-    const fanfictions = await client.fanfictions.find(dbQuery, {
-      projection: {
-        _id: 0,
-        created_at: 0,
-        updated_at: 0,
-        kind: 0,
-        chapters: 0,
-      },
-      limit: query.limit,
-      skip: query.skip,
-      sort: {
-        [query.sort]: SortOrder[query.order],
-      },
-    })
+    const fanfictions = await client.fanfictions
+      .find(dbQuery, {
+        projection: {
+          _id: 0,
+          created_at: 0,
+          updated_at: 0,
+          kind: 0,
+          chapters: 0,
+        },
+        limit: query.limit,
+        skip: query.skip,
+        sort: {
+          [query.sort]: SortOrder[query.order],
+        },
+      })
       .toArray();
 
     return new Response(JSON.stringify(fanfictions), {

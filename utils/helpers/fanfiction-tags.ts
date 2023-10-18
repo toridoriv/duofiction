@@ -87,7 +87,7 @@ export function getRelationshipTag(
 ): FanfictionTag {
   return getTag(
     FanfictionTagName.Relationship,
-    relationship.replaceAll("/", ","),
+    relationship,
     total,
   );
 }
@@ -97,5 +97,7 @@ export function getAuthorTag(authorName: string, total?: number) {
 }
 
 function getTagHref(name: FanfictionTagName, value: string) {
-  return `/catalog?${QUERY_BY_TAG_NAME[name]}${value.replaceAll(" ", "%20")}`;
+  return `/catalog?${QUERY_BY_TAG_NAME[name]}${
+    value.replaceAll("/", ",").replaceAll(" ", "%20")
+  }`;
 }
