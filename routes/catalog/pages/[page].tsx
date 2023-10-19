@@ -10,7 +10,7 @@ type CatalogPageState = {
   navigationProps: NavPaginationProps;
 };
 
-const LIMIT = 2;
+const LIMIT = 3;
 const PAGE_TEMPLATE = "/catalog/pages/:page" as const;
 
 export const handler: Handlers<FanfictionAttributesOutput[], CatalogPageState> =
