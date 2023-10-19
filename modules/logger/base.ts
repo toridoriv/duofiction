@@ -24,8 +24,8 @@ type LogOptions = {
   message: string;
   args?: unknown[];
   error?: LogObject.Error;
-  request?: LogObject.Request;
-  response?: LogObject.Response;
+  request?: Request;
+  response?: Response;
 };
 
 abstract class BaseLogger {
@@ -95,7 +95,7 @@ abstract class BaseLogger {
     });
   }
 
-  public http(request: LogObject.Request, response: LogObject.Response) {
+  public http(request: Request, response: Response) {
     return this.log(SeverityLevel.INFORMATIONAL, LevelName.Http, {
       request,
       response,
