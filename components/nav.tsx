@@ -1,6 +1,6 @@
 import { JSX } from "./deps.ts";
 
-export function NavItem(
+export function NavbarItem(
   { children, ...props }: JSX.HTMLAttributes<HTMLAnchorElement>,
 ) {
   return (
@@ -10,7 +10,7 @@ export function NavItem(
   );
 }
 
-export function Nav(props: JSX.HTMLAttributes<HTMLAnchorElement>[]) {
+export function Navbar(props: JSX.HTMLAttributes<HTMLAnchorElement>[]) {
   return (
     <nav
       class="navbar navbar-expand-lg"
@@ -29,7 +29,7 @@ export function Nav(props: JSX.HTMLAttributes<HTMLAnchorElement>[]) {
       </button>
       <div class="collapse navbar-collapse" id="navbar-collapse-7">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          {props.map(NavItem)}
+          {props.map(NavbarItem)}
         </ul>
       </div>
     </nav>

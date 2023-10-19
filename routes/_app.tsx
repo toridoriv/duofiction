@@ -1,6 +1,6 @@
 import { AppProps } from "$fresh/server.ts";
 import { Partial } from "$fresh/runtime.ts";
-import { Nav } from "@components/nav.tsx";
+import { Navbar } from "@components/nav.tsx";
 import { Favicon, PreloadedStylesheet } from "@components/head.tsx";
 import config from "@modules/config/mod.ts";
 
@@ -46,10 +46,6 @@ const stylesheets = [
     href: "https://cdn.jsdelivr.net/npm/halfmoon@2.0.1/css/halfmoon.min.css",
   },
   {
-    href:
-      "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css",
-  },
-  {
     href: "https://cdn.jsdelivr.net/npm/victormono@latest/dist/index.min.css",
   },
   {
@@ -61,7 +57,7 @@ export default function App(
   { Component, state }: AppProps<AppProperties, AppProperties>,
 ) {
   const title = state.subtitle
-    ? `${state.subtitle} - Duofiction`
+    ? `${state.subtitle} | Duofiction`
     : "Duofiction";
 
   return (
@@ -80,13 +76,19 @@ export default function App(
         />
         {stylesheets.map(PreloadedStylesheet)}
       </head>
-      <body class="subpixel-antialiased">
-        {Nav(links)}
+      <body class="subpixel-antialiased" f-client-nav>
+        {Navbar(links)}
         <main class="container">
           <Partial name="main-content">
             <Component />
           </Partial>
         </main>
+        <script
+          async
+          src="https://kit.fontawesome.com/a1f28487fc.js"
+          crossorigin="anonymous"
+        >
+        </script>
         <script
           async
           src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
