@@ -6,6 +6,11 @@
   --bs-pagination-active-bg: var(--bs-emerald-700);
 }
 
+body {
+  min-height: 100vh;
+  max-height: 100vh;
+}
+
 nav.navbar {
   margin-bottom: 2em;
 }
@@ -49,4 +54,9 @@ article.card {
 
 span[lang] {
   margin-right: 0.6em;
+}
+
+main.container {
+  padding-top: 64px;
+  padding-bottom: 64px;
 }

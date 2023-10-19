@@ -13,7 +13,7 @@ export function NavbarItem(
 export function Navbar(props: JSX.HTMLAttributes<HTMLAnchorElement>[]) {
   return (
     <nav
-      class="navbar navbar-expand-lg"
+      class="navbar navbar-expand-lg fixed-top"
       style="background-color: var(--bs-content-bg)"
     >
       <button
@@ -115,8 +115,15 @@ export function NavPagination(
     NavPaginationProps,
 ) {
   return (
-    <nav {...props}>
-      <ul class="pagination">
+    <nav
+      class="fixed-bottom"
+      style="background-color: var(--bs-content-bg);padding-bottom:1em;padding-top:1em;"
+      {...props}
+    >
+      <ul
+        class="pagination pagination-lg justify-content-center"
+        style="margin-bottom:0;"
+      >
         {NavPaginationArrow({
           isEnabled: currentPage !== 1,
           href: pageTemplate.replace(":page", `${currentPage - 1}`),
