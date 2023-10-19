@@ -1,11 +1,13 @@
-import { JSX } from "@components/deps.ts";
+import { asset, JSX } from "@components/deps.ts";
 
-export function Favicon(props: JSX.HTMLAttributes<HTMLLinkElement>) {
-  return <link rel="icon" {...props} />;
+export function Favicon(
+  { href, ...props }: JSX.HTMLAttributes<HTMLLinkElement>,
+) {
+  return <link rel="icon" href={asset(href as string)} {...props} />;
 }
 
 export function PreloadedStylesheet(
-  props: JSX.HTMLAttributes<HTMLLinkElement>,
+  { href, ...props }: JSX.HTMLAttributes<HTMLLinkElement>,
 ) {
   return (
     <link
@@ -13,6 +15,7 @@ export function PreloadedStylesheet(
       rel="preload"
       // @ts-ignore: ¯\_(ツ)_/¯
       onload="this.onload=null;this.rel='stylesheet'"
+      href={asset(href as string)}
       {...props}
     />
   );
