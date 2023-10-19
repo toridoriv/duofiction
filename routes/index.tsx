@@ -14,30 +14,16 @@ interface HomeData {
 
 export const handler: Handlers<HomeData, HomeState> = {
   async GET(req, ctx) {
-    const baseUrl = new URL(req.url);
-    const recentlyAddedRequest = new Request(
-      new URL(
-        "/api/fanfiction-attributes?limit=3&sort=created_at&order=DESCENDING",
-        baseUrl.origin,
-      ),
-    );
-    const recentlyAddedResponse = await FanfictionAttributesHandler.GET(
-      recentlyAddedRequest,
-      ctx,
-    );
-    const recentlyAdded = await recentlyAddedResponse.json();
+    const recentlyAddedResponse = await FanfictionAttributesHandler.GET(null, {
+      params: { sort: "created_at", order: "ASCENDING", size: 3 },
+    });
+    const { data: recentlyAdded } = await recentlyAddedResponse.json();
 
-    const recentlyUpdatedRequest = new Request(
-      new URL(
-        "/api/fanfiction-attributes?limit=3&sort=updated_at&order=DESCENDING",
-        baseUrl.origin,
-      ),
-    );
     const recentlyUpdatedResponse = await FanfictionAttributesHandler.GET(
-      recentlyUpdatedRequest,
-      ctx,
+      null,
+      { params: { sort: "updated_at", order: "DESCENDING", size: 3 } },
     );
-    const recentlyUpdated = await recentlyUpdatedResponse.json();
+    const { data: recentlyUpdated } = await recentlyUpdatedResponse.json();
 
     ctx.state.subtitle = "Home";
 

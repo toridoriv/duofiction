@@ -1,4 +1,4 @@
-import { JSX } from "./deps.ts";
+import { JSX } from "@components/deps.ts";
 
 export function NavbarItem(
   { children, ...props }: JSX.HTMLAttributes<HTMLAnchorElement>,
@@ -32,6 +32,103 @@ export function Navbar(props: JSX.HTMLAttributes<HTMLAnchorElement>[]) {
           {props.map(NavbarItem)}
         </ul>
       </div>
+    </nav>
+  );
+}
+
+export interface NavPaginationItemProps {
+  isActive?: boolean;
+  href: string;
+  page: number | string;
+}
+
+export function NavPaginationItem(
+  { isActive, href, page }: NavPaginationItemProps,
+) {
+  const props: JSX.HTMLAttributes<HTMLLIElement> = {
+    class: "page-item",
+  };
+
+  if (isActive) {
+    props.class = `${props.class} active`;
+    props["aria-current"] = "page";
+  }
+
+  return (
+    <li {...props}>
+      <a class="page-link" href={href}>{page}</a>
+    </li>
+  );
+}
+
+enum NavPaginationArrowDirection {
+  PREVIOUS = "Previous",
+  NEXT = "Next",
+}
+
+const NavPaginationArrowIcon = {
+  [NavPaginationArrowDirection.PREVIOUS]: "fa-solid fa-angle-left",
+  [NavPaginationArrowDirection.NEXT]: "fa-solid fa-angle-right",
+};
+
+export interface NavPaginationArrowProps {
+  isEnabled?: boolean;
+  href: string;
+  direction: NavPaginationArrowDirection;
+}
+
+export function NavPaginationArrow(
+  { isEnabled, href, direction }: NavPaginationArrowProps,
+) {
+  const props: JSX.HTMLAttributes<HTMLLIElement> = {
+    class: "page-item",
+  };
+  const anchorProps: JSX.HTMLAttributes<HTMLAnchorElement> = {
+    href,
+  };
+
+  if (!isEnabled) {
+    props.class = `${props.class} disabled`;
+    anchorProps.style = "pointer-events: none";
+  }
+
+  return (
+    <li {...props}>
+      <a class="page-link" aria-label={direction} {...anchorProps}>
+        <i class={NavPaginationArrowIcon[direction]}>
+        </i>
+      </a>
+    </li>
+  );
+}
+
+export interface NavPaginationProps extends JSX.HTMLAttributes<HTMLElement> {
+  "aria-label": string;
+  pageTemplate: `${string}/:page`;
+  pagesProps: NavPaginationItemProps[];
+  currentPage: number;
+  lastPage: number;
+}
+
+export function NavPagination(
+  { pageTemplate, pagesProps, currentPage, lastPage, ...props }:
+    NavPaginationProps,
+) {
+  return (
+    <nav {...props}>
+      <ul class="pagination">
+        {NavPaginationArrow({
+          isEnabled: currentPage !== 1,
+          href: pageTemplate.replace(":page", `${currentPage - 1}`),
+          direction: NavPaginationArrowDirection.PREVIOUS,
+        })}
+        {pagesProps.map(NavPaginationItem)}
+        {NavPaginationArrow({
+          isEnabled: lastPage !== currentPage,
+          href: pageTemplate.replace(":page", `${currentPage + 1}`),
+          direction: NavPaginationArrowDirection.NEXT,
+        })}
+      </ul>
     </nav>
   );
 }

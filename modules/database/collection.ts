@@ -51,6 +51,13 @@ export function createCollection<T extends BaseDocument>(
     >;
   }
 
+  function countDocuments<Q extends CollectionQuery>(
+    query: Q,
+    options?: mongodb.CountDocumentsOptions,
+  ) {
+    return $collection.countDocuments(query, options);
+  }
+
   function deleteById(id: string, options?: mongodb.DeleteOptions) {
     return $collection.deleteOne({ _id: new mongodb.UUID(id) }, options);
   }
@@ -99,6 +106,7 @@ export function createCollection<T extends BaseDocument>(
     get collectionName() {
       return $collection.collectionName;
     },
+    countDocuments,
     deleteById,
     deleteMany,
     find,

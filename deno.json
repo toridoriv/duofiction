@@ -49,9 +49,11 @@
     }
   },
   "tasks": {
+    "build": "deno run -A dev.ts build",
     "cache": "deno task manage cache -d",
     "cache:prod": "deno task manage cache",
     "manage": "deno run --allow-all bin/manage.ts",
+    "preview": "deno run -A main.ts",
     "start": "deno run -A --watch=static/,routes/,components/,utils/ dev.ts"
   }
 }

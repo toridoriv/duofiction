@@ -12,7 +12,7 @@
   "deno.config": "./deno.json",
   "deno.enable": true,
   "deno.unstable": true,
-  "deno.documentPreloadLimit": 1000,
+  "deno.documentPreloadLimit": 5000,
   "deno.maxTsServerMemory": 6000,
   "editor.codeActionsOnSave": {
     "source.fixAll": true,

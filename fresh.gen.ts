@@ -4,13 +4,15 @@
 
 import * as $0 from "./routes/_app.tsx";
 import * as $1 from "./routes/api/fanfiction-attributes/index.ts";
-import * as $2 from "./routes/index.tsx";
+import * as $2 from "./routes/catalog/pages/[page].tsx";
+import * as $3 from "./routes/index.tsx";
 
 const manifest = {
   routes: {
     "./routes/_app.tsx": $0,
     "./routes/api/fanfiction-attributes/index.ts": $1,
-    "./routes/index.tsx": $2,
+    "./routes/catalog/pages/[page].tsx": $2,
+    "./routes/index.tsx": $3,
   },
   islands: {},
   baseUrl: import.meta.url,
