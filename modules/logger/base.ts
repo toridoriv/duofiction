@@ -24,8 +24,8 @@ type LogOptions = {
   message: string;
   args?: unknown[];
   error?: LogObject.Error;
-  request?: Request;
-  response?: Response;
+  request?: LogObject.Request;
+  response?: LogObject.Response;
 };
 
 abstract class BaseLogger {
@@ -95,7 +95,7 @@ abstract class BaseLogger {
     });
   }
 
-  public http(request: Request, response: Response) {
+  public http(request: LogObject.Request, response: LogObject.Response) {
     return this.log(SeverityLevel.INFORMATIONAL, LevelName.Http, {
       request,
       response,
@@ -225,4 +225,8 @@ export class JsonLogger extends BaseLogger {
   protected format(logObject: LogObject) {
     return JSON.stringify(logObject, null, 2);
   }
+}
+
+declare global {
+  type Logger = BaseLogger;
 }

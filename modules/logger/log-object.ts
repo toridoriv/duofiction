@@ -11,13 +11,27 @@ export namespace LogObject {
     title?: string;
   };
 
+  export type Request = {
+    httpVersion?: string;
+    id?: string;
+    method?: string;
+    get: (value: string) => string | undefined;
+    originalUrl?: string;
+  };
+
+  export type Response = {
+    duration?: number;
+    get: (value: string) => string | undefined;
+    statusCode?: number;
+  };
+
   export type OptionalField<T> = T | undefined;
 }
 
 export class LogObject {
   #error?: LogObject.Error;
-  #request?: Request;
-  #response?: Response;
+  #request?: LogObject.Request;
+  #response?: LogObject.Response;
 
   readonly "@timestamp" = formatDate(new Date(), "yyyy-MM-dd HH:mm:ss.SSS");
   public "log.level": LevelName = "" as LevelName;
@@ -53,8 +67,8 @@ export class LogObject {
 
   constructor(
     error?: LogObject.Error,
-    request?: Request,
-    response?: Response,
+    request?: LogObject.Request,
+    response?: LogObject.Response,
   ) {
     this.#error = error!;
     this.#request = request!;
@@ -118,24 +132,21 @@ export class LogObject {
     return this;
   }
 
-  public setRequestFields(request: Request) {
-    this["http.version"] = request.headers.has("http2-settings")
-      ? "HTTP/2"
-      : "HTTP/1.1";
-    this["http.request.id"] = request.headers.get("x-trace-id") || "";
+  public setRequestFields(request: LogObject.Request) {
+    this["http.version"] = request.httpVersion;
+    this["http.request.id"] = request.id;
     this["http.request.method"] = request.method;
-    this["http.request.mime_type"] = request.headers.get("content-type") || "";
-    this["http.request.referrer"] = request.headers.get("referrer") || "";
-    this["http.request.url.original"] = request.url;
+    this["http.request.mime_type"] = request.get("content-type");
+    this["http.request.referrer"] = request.get("referrer");
+    this["http.request.url.original"] = request.originalUrl;
 
     return this;
   }
 
-  public setResponseFields(response: Response) {
-    // this["event.duration"] = response.duration || 0.1;
-    this["http.response.mime_type"] = response.headers.get("content-type") ||
-      "";
-    this["http.response.status_code"] = response.status;
+  public setResponseFields(response: LogObject.Response) {
+    this["event.duration"] = response.duration || 0.1;
+    this["http.response.mime_type"] = response.get("content-type");
+    this["http.response.status_code"] = response.statusCode;
 
     return this;
   }
