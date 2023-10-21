@@ -34,10 +34,7 @@ function getDependencyFiles(isDevelopment: boolean) {
     exts: [".ts"],
     match: [
       /deps\./,
-      new RegExp("dev.ts"),
-      new RegExp("fresh.config.ts"),
-      new RegExp("fresh.gen.ts"),
-      new RegExp("^main.ts"),
+      new RegExp(".d.ts"),
     ],
     skip,
   };

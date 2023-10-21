@@ -9,8 +9,7 @@ import {
   z,
 } from "../deps.ts";
 import config from "@modules/config/mod.ts";
-import { executeCommand } from "./_utils.ts";
-import { logger } from "@utils/logger.ts";
+import { executeCommand, logger } from "./_utils.ts";
 
 const commitFormat = {
   hash: "%H",

@@ -1,3 +1,12 @@
+import { Logger } from "@modules/logger/mod.ts";
+
+export const logger = Logger.create({
+  severity: "DEBUG",
+  mode: "PRETTY",
+  application: "@duofiction/bin",
+  environment: "DEVELOPMENT",
+});
+
 export function executeCommand(main: string, options?: Deno.CommandOptions) {
   const command = new Deno.Command(main, options);
   const { code, stdout, stderr } = command.outputSync();
