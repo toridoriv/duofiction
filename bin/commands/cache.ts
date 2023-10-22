@@ -28,7 +28,7 @@ export default CacheCommand;
 
 function getDependencyFiles(isDevelopment: boolean) {
   const paths = [] as string[];
-  const skip = [/node_modules/];
+  const skip = [/node_modules/, new RegExp("mod.ts")];
   const opts: WalkOptions = {
     includeDirs: false,
     exts: [".ts"],
