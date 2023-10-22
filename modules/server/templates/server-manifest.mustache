@@ -1,0 +1,19 @@
+{{#imports}}
+{{{.}}}
+{{/imports}}
+
+const manifest: Server.Manifest = {
+  routes: {
+    {{#routes}}
+    {{{.}}},
+    {{/routes}}
+  },
+  middlewares: {
+    {{#middlewares}}
+    {{{.}}},
+    {{/middlewares}}
+  },
+  baseUrl: import.meta.url,
+}
+
+export default manifest;
