@@ -1,4 +1,5 @@
-import { CliffyCommand, walkSync } from "./deps.ts";
+import { registerCommands } from "./commands/_utils.ts";
+import { CliffyCommand } from "./deps.ts";
 
 const ManageCommand = new CliffyCommand.Command()
   .name("manage")
@@ -7,27 +8,11 @@ const ManageCommand = new CliffyCommand.Command()
     this.showHelp();
   });
 
-await registerCommands();
+await registerCommands(ManageCommand, "./bin/commands", {
+  maxDepth: 1,
+  exts: [".ts"],
+  skip: [/_/],
+  includeDirs: false,
+});
 
 ManageCommand.parse(Deno.args);
-
-async function registerCommands() {
-  const commands = [] as CliffyCommand.Command[];
-  const options = {
-    maxDepth: 3,
-    includeDirs: false,
-    exts: [".ts"],
-    skip: [/_/],
-  };
-
-  for (const entry of walkSync("./bin/commands", options)) {
-    const path = entry.path.replace("bin/", "./");
-    const { default: command } = await import(path);
-
-    if (command instanceof CliffyCommand.Command) {
-      ManageCommand.command(command.getName(), command);
-    }
-  }
-
-  return commands;
-}

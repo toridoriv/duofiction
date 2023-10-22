@@ -1,4 +1,5 @@
 import { Logger } from "@modules/logger/mod.ts";
+import { CliffyCommand, WalkOptions, walkSync } from "../deps.ts";
 
 export const logger = Logger.create({
   severity: "DEBUG",
@@ -18,4 +19,23 @@ export function executeCommand(main: string, options?: Deno.CommandOptions) {
   }
 
   return new TextDecoder().decode(stdout);
+}
+
+export async function registerCommands(
+  mainCommand: CliffyCommand.Command,
+  dir: string,
+  options: WalkOptions,
+) {
+  const commands = [] as CliffyCommand.Command[];
+
+  for (const entry of walkSync(dir, options)) {
+    const path = `@${entry.path}`;
+    const { default: command } = await import(path);
+
+    if (command instanceof CliffyCommand.Command) {
+      mainCommand.command(command.getName(), command);
+    }
+  }
+
+  return commands;
 }
