@@ -1,0 +1,36 @@
+<nav class="navbar navbar-expand-lg"
+  style="background-color: var(--bs-content-bg)">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbar-collapse-7" aria-controls="navbar-collapse-7"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbar-collapse-7">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        {{#each navLinks}}
+          {{> navlink . }}
+        {{/each}}
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search tags"
+          aria-label="Search" />
+        <button class="btn btn-success" type="submit">Search</button>
+      </form>
+      {{!-- {{#if (isNotTrue @root.isLoggedIn)}}
+          <div class="d-flex ms-2">
+            <button class="btn btn-success" data-bs-toggle="modal"
+              data-bs-target="#login-modal">Login</button>
+          </div>
+        {{else}}
+          <div class="d-flex ms-2">
+            <form id="logout-form" action="/logout" method="post"
+              enctype="application/x-www-form-urlencoded">
+              <input type="hidden" name="redirectTo" id="logout-redirect-to">
+              <button class="btn btn-success" type="submit">Logout</button>
+            </form>
+          </div>
+        {{/if}} --}}
+    </div>
+  </div>
+</nav>
