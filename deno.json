@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
     "exactOptionalPropertyTypes": false,
-    "jsx": "react-jsx",
-    "jsxImportSource": "preact",
+    "lib": [
+      "deno.window",
+      "deno.unstable"
+    ],
     "noImplicitThis": true,
     "strictNullChecks": true
   },
@@ -18,17 +20,11 @@
     "useTabs": false
   },
   "imports": {
-    "$fresh/": "https://deno.land/x/fresh@1.5.2/",
-    "@components/": "./components/",
-    "@islands/": "./islands/",
+    "$std/": "https://deno.land/std@0.204.0/",
+    "@bin/": "./bin/",
     "@modules/": "./modules/",
-    "@preact/signals": "https://esm.sh/*@preact/signals@1.2.1",
-    "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.0",
     "@routes/": "./routes/",
-    "@utils/": "./utils/",
-    "preact": "https://esm.sh/preact@10.18.1",
-    "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.2.2",
-    "preact/": "https://esm.sh/preact@10.18.1/"
+    "@utils/": "./utils/"
   },
   "lint": {
     "exclude": [
@@ -45,15 +41,17 @@
   "nodeModulesDir": true,
   "scopes": {
     "./node_modules/": {
-      "express-serve-static-core": "./modules/typings/express-serve-static-core.d.ts"
+      "express-serve-static-core": "./modules/server/express-serve-static-core.d.ts"
     }
   },
   "tasks": {
     "build": "deno run -A dev.ts build",
     "cache": "deno task manage cache -d",
     "cache:prod": "deno task manage cache",
+    "deploy": "deployctl deploy --project=duofiction --exclude=node_modules,.env,.tmp,bin,.github,prettier-config.mjs,scripts.config.ts main.ts",
+    "generate:manifest": "deno task manage generate manifest --dir=routes",
     "manage": "deno run --allow-all bin/manage.ts",
     "preview": "deno run -A main.ts",
-    "start": "deno run -A --watch=static/,routes/,components/,utils/ dev.ts"
+    "start": "deno task generate:manifest && denon start"
   }
 }

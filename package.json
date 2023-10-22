@@ -6,5 +6,8 @@
   "description": "An API Rest and a website to store and manage my personal collection of fanfictions and its translations.",
   "scripts": {
     "start": "denon start"
+  },
+  "config": {
+    "title": "Duofiction"
   }
 }
