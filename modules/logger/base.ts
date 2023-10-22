@@ -228,5 +228,7 @@ export class JsonLogger extends BaseLogger {
 }
 
 declare global {
-  type Logger = BaseLogger;
+  namespace LoggerModule {
+    type Logger = BaseLogger;
+  }
 }
