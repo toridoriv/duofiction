@@ -1,6 +1,6 @@
 import denoJson from "./deno.json" assert { type: "json" };
 
-/** @type {import("npm:prettier@3.0.3").PrettierConfig} */
+/** @type {import("npm:prettier@3.0.3").Options} */
 const config = {
   overrides: [{
     files: ["*.handlebars", "*.html"],
