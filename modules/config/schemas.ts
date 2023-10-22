@@ -20,6 +20,9 @@ export const PackageJsonSchema = z
     name: z.string().min(1),
     version: z.string().min(5),
     homepage: UrlSchema,
+    config: z.object({
+      title: NotEmptyStringSchema,
+    }),
   })
   .transform(toUpperCaseKeys);
 
@@ -43,10 +46,12 @@ function toUpperCaseKeys(value: {
   name: string;
   version: string;
   homepage: string;
+  config: { title: string };
 }) {
   return {
     NAME: value.name,
     VERSION: value.version,
     HOMEPAGE: value.homepage,
+    TITLE: value.config.title,
   };
 }
