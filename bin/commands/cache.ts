@@ -15,7 +15,7 @@ const CacheCommand = new CliffyCommand.Command()
 
     removePreviousCache();
 
-    paths.forEach(cacheDependencies);
+    paths.forEach(cacheDependencies.bind(null, options.development));
 
     console.info("✅ All dependencies were cached.");
   });
@@ -71,10 +71,17 @@ function removePreviousCache() {
   }
 }
 
-function cacheDependencies(path: string) {
+function cacheDependencies(isDevelopment: boolean, path: string) {
   console.info(`ℹ️  Caching dependencies for ./${path}`);
+  const args = ["cache"];
+
+  if (isDevelopment) {
+    args.push("--lock-write");
+  }
+
+  args.push(path);
   const output = executeCommand("deno", {
-    args: ["cache", "--lock-write", path],
+    args,
   });
 
   return output;
