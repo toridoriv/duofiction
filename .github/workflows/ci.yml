@@ -1,0 +1,28 @@
+name: ♾️ Continuous Integration
+
+on: [push, pull_request]
+
+env:
+  DENO_DIR: ~/.deno
+
+jobs:
+  setup:
+    name: 🛠️ Setup Workflow
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+        with:
+          path: app
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: vx.x.x
+          path: ${{ env.DENO_DIR }}
+      - name: Cache Dependencies
+        working-directory: ./app
+        run: deno task cache:prod
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: app
