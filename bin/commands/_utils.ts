@@ -44,9 +44,8 @@ export function getDependencyFilePaths(isDevelopment: boolean) {
   const match: RegExp[] = [
     /deps\./,
     /modules\/.*\.d\.ts/,
-    /deno\/npm\/registry/,
   ];
-  const skip: RegExp[] = [/node_modules/];
+  const skip: RegExp[] = [/node_modules/, /deno\/npm\/registry/];
 
   if (isDevelopment) {
     match.push(/prettier\.config/, /scripts\.config/);
