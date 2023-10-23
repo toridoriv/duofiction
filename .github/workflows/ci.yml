@@ -3,7 +3,7 @@ name: ♾️ Continuous Integration
 on: [push, pull_request]
 
 env:
-  DENO_DIR: ~/.deno
+  DENO_DIR: .deno
   ENVIRONMENT: ${{ vars.ENVIRONMENT }}
   ADMIN_EMAILS: ${{ secrets.ADMIN_EMAILS }}
   ADMIN_PASSWORDS: ${{ secrets.ADMIN_PASSWORDS }}
@@ -21,11 +21,10 @@ jobs:
         uses: denoland/setup-deno@v1
         with:
           deno-version: vx.x.x
-          path: ${{ env.DENO_DIR }}
       - name: Cache Dependencies
         working-directory: ./app
         run: deno task cache:prod
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          path: app
+          path: ${{ env.DENO_DIR }}
