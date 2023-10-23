@@ -26,5 +26,3 @@ jobs:
         with:
           name: app
           path: ./
-        with:
-          path: ${{ env.DENO_DIR }}
