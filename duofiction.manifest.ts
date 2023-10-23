@@ -15,6 +15,6 @@ const manifest: Server.Manifest = {
     "/api/": $middlewares1,
   },
   baseUrl: import.meta.url,
-}
+};
 
 export default manifest;

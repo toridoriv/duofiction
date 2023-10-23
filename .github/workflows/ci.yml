@@ -4,41 +4,63 @@ on: [push, pull_request]
 
 env:
   DENO_DIR: deno
-  DENO_INSTALL_ROOT: deno-bin
+  DENO_DEPLOY_TOKEN: ${{ secrets.DENO_DEPLOY_TOKEN }}
   ENVIRONMENT: ${{ vars.ENVIRONMENT }}
   ADMIN_EMAILS: ${{ secrets.ADMIN_EMAILS }}
   ADMIN_PASSWORDS: ${{ secrets.ADMIN_PASSWORDS }}
 
 jobs:
-  setup:
-    name: 🛠️ Setup Workflow
+  check-code-quality:
+    name: ✅ Check Code Quality
     runs-on: ubuntu-latest
     steps:
-      - name: Clone repository
+      - name: 👯‍♂️ Clone Repository
         uses: actions/checkout@v4
-      - name: Setup Deno
+      - name: 🦕 Setup Deno
         uses: denoland/setup-deno@v1
         with:
           deno-version: vx.x.x
-      - name: Cache dependencies
-        run: deno task cache:prod
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: app
-          path: |
-            ./
-            !.git
-  test:
-    name: 🧪 Run Tests
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: app
-      - name: Start MongoDB
+      - name: 🗄️ Start Database
         uses: MongoCamp/mongodb-github-action@1.2.0
-      - name: Run tests with Deno
-        run: deno test -A
+      - name: 🔎 Lint Files
+        run: deno lint
+      - name: 🧪 Run Tests
+        run: deno test --allow-all
+
+  release-preview:
+    name: 🛰️ Release Preview
+    needs: check-code-quality
+    if: ${( !startsWith(github.ref, 'refs/tags/') )}
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: 👯‍♂️ Clone Repository
+        uses: actions/checkout@v4
+      - name: 🦕 Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: vx.x.x
+      - name: 🧰 Install Deploy Tool
+        run: deno install -A --no-check -r -f https://deno.land/x/deploy/deployctl.ts
+      - name: 🔥 Deploy
+        run: deno task deploy
+        
+  release-production:
+    name: 🚀 Release Production
+    needs: check-code-quality
+    if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: 👯‍♂️ Clone Repository
+        uses: actions/checkout@v4
+      - name: 🦕 Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: vx.x.x
+      - name: 🧰 Install Deploy Tool
+        run: deno install -A --no-check -r -f https://deno.land/x/deploy/deployctl.ts
+      - name: 🔥 Deploy
+        run: deno task deploy:prod

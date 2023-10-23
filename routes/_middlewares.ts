@@ -1,8 +1,5 @@
 import { difference } from "$std/datetime/difference.ts";
-import {
-  defineErrorMiddleware,
-  defineMiddleware,
-} from "@modules/server/mod.ts";
+import { defineMiddleware } from "@modules/server/mod.ts";
 
 const inspectRequest = defineMiddleware(
   function inspectRequest(req, res, next) {
@@ -23,7 +20,7 @@ const inspectRequest = defineMiddleware(
 );
 
 const handleNotFound = defineMiddleware(
-  function handleNotFound(req, res, next) {
+  function handleNotFound(req, res, _next) {
     res.app.logger.debug("Handling not found error...");
     return res.status(404).send(`Cannot ${req.method} ${req.url}`);
   },
