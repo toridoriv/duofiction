@@ -134,7 +134,13 @@ const ReleaseCommand = new CliffyCommand.Command()
   .option("-p, --patch", "Release a patch version", {
     conflicts: ["minor", "major"],
     required: true,
-  }).action(function main(options) {
+  })
+  .option(
+    "-n, --dry-run [dry-run:boolean]",
+    "Print the release notes without actually making a new release.",
+    { default: false },
+  )
+  .action(function main(options) {
     const current = getVersionObject(config.VERSION);
     const type = getReleaseType(options);
     const next = getVersionObject(semver.increment(current.semver, type));
@@ -150,8 +156,12 @@ const ReleaseCommand = new CliffyCommand.Command()
 
     const notes = Mustache.render(template, release);
 
-    updatePackageJson(release.version);
-    createGitTag(release.tag, notes);
+    if (!options.dryRun) {
+      updatePackageJson(release.version);
+      createGitTag(release.tag, notes);
+    } else {
+      console.info(Deno.inspect(notes, { strAbbreviateSize: Infinity }));
+    }
   });
 
 if (import.meta.main) {
