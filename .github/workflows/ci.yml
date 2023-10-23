@@ -3,7 +3,7 @@ name: ♾️ Continuous Integration
 on: [push, pull_request]
 
 env:
-  DENO_DIR: .deno
+  DENO_DIR: deno
   ENVIRONMENT: ${{ vars.ENVIRONMENT }}
   ADMIN_EMAILS: ${{ secrets.ADMIN_EMAILS }}
   ADMIN_PASSWORDS: ${{ secrets.ADMIN_PASSWORDS }}
@@ -15,16 +15,12 @@ jobs:
     steps:
       - name: Clone repository
         uses: actions/checkout@v4
-        with:
-          path: app
       - name: Setup Deno
         uses: denoland/setup-deno@v1
         with:
           deno-version: vx.x.x
       - name: Cache Dependencies
-        run: |
-          cd app
-          deno task cache:prod
+        run: deno task cache:prod
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
