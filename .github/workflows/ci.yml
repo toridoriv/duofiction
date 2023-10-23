@@ -5,8 +5,8 @@ on: [push, pull_request]
 env:
   DENO_DIR: ~/.deno
   ENVIRONMENT: ${{ vars.ENVIRONMENT }}
-  ADMIN_EMAILS: ${{ vars.ADMIN_EMAILS }}
-  ADMIN_PASSWORDS: ${{ vars.ADMIN_PASSWORDS }}
+  ADMIN_EMAILS: ${{ secrets.ADMIN_EMAILS }}
+  ADMIN_PASSWORDS: ${{ secrets.ADMIN_PASSWORDS }}
 
 jobs:
   setup:
