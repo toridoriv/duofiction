@@ -32,6 +32,7 @@ jobs:
   test:
     name: 🧪 Run Tests
     needs: setup
+    runs-on: ubuntu-latest
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v3
