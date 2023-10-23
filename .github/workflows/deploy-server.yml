@@ -25,4 +25,4 @@ jobs:
         uses: denoland/deployctl@v1
         with:
           project: duofiction # the name of the project on Deno Deploy
-          entrypoint: main.ts # the entrypoint to deploy
+          entrypoint: duofiction.main.ts # the entrypoint to deploy

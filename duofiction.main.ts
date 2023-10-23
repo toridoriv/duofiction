@@ -3,7 +3,7 @@ import "$std/dotenv/load.ts";
 import * as serverModule from "@modules/server/mod.ts";
 import { Logger } from "@modules/logger/mod.ts";
 import config from "@modules/config/mod.ts";
-import manifest from "./app.manifest.ts";
+import manifest from "./duofiction.manifest.ts";
 
 const NAVBAR_LINKS = [
   { text: "🏠 Home", href: "/" },

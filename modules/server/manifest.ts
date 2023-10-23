@@ -7,7 +7,7 @@ const TEMPLATE = Deno.readTextFileSync(
   "./modules/server/templates/server-manifest.mustache",
 );
 
-export function generateManifest(dir: string) {
+export function generateManifest(dir: string, filename: string) {
   const namespace = dir.replace("./", "@");
   const routePaths = getRoutesPaths(dir);
   const middlewarePaths = getMiddlewaresPaths(dir);
@@ -39,7 +39,7 @@ export function generateManifest(dir: string) {
     middlewares,
   });
 
-  return Deno.writeTextFileSync("./app.manifest.ts", fileContent);
+  return Deno.writeTextFileSync(filename, fileContent);
 }
 
 function createImportLine(name: string, path: string) {

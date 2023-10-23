@@ -45,13 +45,11 @@
     }
   },
   "tasks": {
-    "build": "deno run -A dev.ts build",
     "cache": "deno task manage cache -d",
     "cache:prod": "deno task manage cache",
     "deploy": "deployctl deploy --project=duofiction --exclude=node_modules,.env,.tmp,bin,.github,prettier-config.mjs,scripts.config.ts main.ts",
-    "generate:manifest": "deno task manage generate manifest --dir=routes",
+    "generate:manifest": "deno task manage generate manifest --dir=routes --file=duofiction.manifest.ts",
     "manage": "deno run --allow-all bin/manage.ts",
-    "preview": "deno run -A main.ts",
     "start": "deno task generate:manifest && denon start"
   }
 }
