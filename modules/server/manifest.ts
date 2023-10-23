@@ -8,7 +8,7 @@ const TEMPLATE = Deno.readTextFileSync(
 );
 
 export function generateManifest(dir: string, filename: string) {
-  const namespace = dir.replace("./", "@");
+  const namespace = dir.startsWith("./") ? dir.replace("./", "@") : `@${dir}`;
   const routePaths = getRoutesPaths(dir);
   const middlewarePaths = getMiddlewaresPaths(dir);
   const imports: string[] = [];

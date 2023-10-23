@@ -6,13 +6,13 @@ import { default as $middlewares1 } from "@routes/api/_middlewares.ts";
 
 const manifest: Server.Manifest = {
   routes: {
-    "@/greet/:name": $route0,
-    "@/api/fanfiction-attributes/": $route1,
-    "@/": $route2,
+    "/greet/:name": $route0,
+    "/api/fanfiction-attributes/": $route1,
+    "/": $route2,
   },
   middlewares: {
-    "@/": $middlewares0,
-    "@/api/": $middlewares1,
+    "/": $middlewares0,
+    "/api/": $middlewares1,
   },
   baseUrl: import.meta.url,
 }
