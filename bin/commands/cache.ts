@@ -13,7 +13,9 @@ const CacheCommand = new CliffyCommand.Command()
   .action(function main(options) {
     const paths = getDependencyFiles(options.development);
 
-    removePreviousCache();
+    if (options.development) {
+      removePreviousCache();
+    }
 
     paths.forEach(cacheDependencies.bind(null, options.development));
 
@@ -77,6 +79,8 @@ function cacheDependencies(isDevelopment: boolean, path: string) {
 
   if (isDevelopment) {
     args.push("--lock-write");
+  } else {
+    args.push("--lock=deno.lock");
   }
 
   args.push(path);
