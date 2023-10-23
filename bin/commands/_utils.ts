@@ -42,7 +42,7 @@ export async function registerCommands(
 
 export function getDependencyFilePaths(isDevelopment: boolean) {
   const match: RegExp[] = [/deps\./, /\.d\.ts/];
-  const skip: RegExp[] = [/node_modules/];
+  const skip: RegExp[] = [/node_modules/, new RegExp(`${getDenoDirPath()}/`)];
 
   if (isDevelopment) {
     match.push(/prettier\.config/, /scripts\.config/);
@@ -78,7 +78,7 @@ export function runDenoCache(writeLock: boolean, path: string) {
 }
 
 export function removePreviousCache() {
-  const denoDir = getCachePath();
+  const denoDir = getDenoDirPath();
   const nodeModulesDir = "./node_modules";
 
   if (existsSync(denoDir)) {
@@ -92,7 +92,7 @@ export function removePreviousCache() {
   }
 }
 
-export function getCachePath() {
+export function getDenoDirPath() {
   const output = executeCommand("deno", { args: ["info", "--json"] });
 
   return JSON.parse(output).denoDir as string;
