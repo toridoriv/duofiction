@@ -48,8 +48,8 @@
     "cache": "deno task manage cache -d",
     "cache:clean": "deno task manage cache -d -c",
     "cache:prod": "deno task manage cache",
-    "deploy": "deployctl deploy --project=duofiction --exclude=.git,node_modules,.env,.tmp,bin,.github,prettier-config.mjs,scripts.config.ts main.ts",
-    "deploy:prod": "deployctl deploy --prod --project=duofiction --exclude=.git,node_modules,.env,.tmp,bin,.github,prettier-config.mjs,scripts.config.ts main.ts",
+    "deploy": "deployctl deploy --project=duofiction --exclude=.git,node_modules,.env,.tmp,bin,.github,prettier-config.mjs,scripts.config.ts duofiction.main.ts",
+    "deploy:prod": "deployctl deploy --prod --project=duofiction --exclude=.git,node_modules,.env,.tmp,bin,.github,prettier-config.mjs,scripts.config.ts duofiction.main.ts",
     "generate:manifest": "deno task manage generate manifest --dir=routes --file=duofiction.manifest.ts",
     "manage": "deno run --allow-all bin/manage.ts",
     "start": "deno task generate:manifest && denon start"
