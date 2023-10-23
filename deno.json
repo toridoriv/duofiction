@@ -46,6 +46,7 @@
   },
   "tasks": {
     "cache": "deno task manage cache -d",
+    "cache:clean": "deno task manage cache -d -c",
     "cache:prod": "deno task manage cache",
     "deploy": "deployctl deploy --project=duofiction --exclude=node_modules,.env,.tmp,bin,.github,prettier-config.mjs,scripts.config.ts main.ts",
     "generate:manifest": "deno task manage generate manifest --dir=routes --file=duofiction.manifest.ts",

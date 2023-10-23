@@ -10,10 +10,15 @@ const CacheCommand = new CliffyCommand.Command()
   .name("cache")
   .description("Cache all dependencies for this project.")
   .option("-d, --development [development:boolean]", "", { default: false })
+  .option(
+    "-c --clean [clean:boolean]",
+    "Use this option to remove all previous cache.",
+    { default: false },
+  )
   .action(function main(options) {
     const paths = getDependencyFiles(options.development);
 
-    if (options.development) {
+    if (options.clean) {
       removePreviousCache();
     }
 
@@ -77,9 +82,7 @@ function cacheDependencies(isDevelopment: boolean, path: string) {
   console.info(`ℹ️  Caching dependencies for ./${path}`);
   const args = ["cache"];
 
-  if (isDevelopment) {
-    args.push("--lock-write");
-  } else {
+  if (!isDevelopment) {
     args.push("--lock=deno.lock");
   }
 
