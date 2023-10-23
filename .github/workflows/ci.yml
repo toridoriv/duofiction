@@ -22,8 +22,9 @@ jobs:
         with:
           deno-version: vx.x.x
       - name: Cache Dependencies
-        working-directory: ./app
-        run: deno task cache:prod
+        run: |
+          cd app
+          deno task cache:prod
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
