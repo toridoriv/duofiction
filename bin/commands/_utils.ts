@@ -41,8 +41,8 @@ export async function registerCommands(
 }
 
 export function getDependencyFilePaths(isDevelopment: boolean) {
-  const match: RegExp[] = [/deps\./, /\.d\.ts/];
-  const skip: RegExp[] = [/node_modules/, new RegExp(`${getDenoDirPath()}/`)];
+  const match: RegExp[] = [/deps\./, /modules\/.*\.d\.ts/];
+  const skip: RegExp[] = [/node_modules/];
 
   if (isDevelopment) {
     match.push(/prettier\.config/, /scripts\.config/);
