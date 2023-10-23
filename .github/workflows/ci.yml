@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 env:
   DENO_DIR: deno
+  DENO_INSTALL_ROOT: deno-bin
   ENVIRONMENT: ${{ vars.ENVIRONMENT }}
   ADMIN_EMAILS: ${{ secrets.ADMIN_EMAILS }}
   ADMIN_PASSWORDS: ${{ secrets.ADMIN_PASSWORDS }}
@@ -19,10 +20,24 @@ jobs:
         uses: denoland/setup-deno@v1
         with:
           deno-version: vx.x.x
-      - name: Cache Dependencies
+      - name: Cache dependencies
         run: deno task cache:prod
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: app
-          path: ./
+          path: |
+            ./
+            !.git
+  test:
+    name: 🧪 Run Tests
+    needs: setup
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: app
+      - name: Start MongoDB
+        uses: MongoCamp/mongodb-github-action@1.2.0
+      - name: Run tests with Deno
+        run: deno test -A
