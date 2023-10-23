@@ -41,7 +41,11 @@ export async function registerCommands(
 }
 
 export function getDependencyFilePaths(isDevelopment: boolean) {
-  const match: RegExp[] = [/deps\./, /modules\/.*\.d\.ts/];
+  const match: RegExp[] = [
+    /deps\./,
+    /modules\/.*\.d\.ts/,
+    /deno\/npm\/registry/,
+  ];
   const skip: RegExp[] = [/node_modules/];
 
   if (isDevelopment) {
