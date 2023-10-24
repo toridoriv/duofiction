@@ -412,8 +412,11 @@ export type FromDotNotation<T> = ExpandRecursively<
  * ```
  */
 export type ExcludeNever<T> = {
-  [K in keyof T as T[K] extends never ? never : K]: T[K] extends Array<infer L>
-    ? L extends AnyRecord ? ExcludeNever<L>[] : T[K]
+  [
+    K in keyof T as NonNullable<T[K]> extends never ? never
+      : K
+  ]: T[K] extends Array<infer L> ? L extends AnyRecord ? ExcludeNever<L>[]
+    : T[K]
     : T[K] extends AnyRecord ? ExcludeNever<T[K]>
     : T[K];
 };
@@ -425,6 +428,49 @@ export type DeepPartial<T> = T extends object ? {
     [P in keyof T]?: DeepPartial<T[P]>;
   }
   : T;
+
+/**
+ * Returns the known keys of type T, filtering out any not named keys.
+ *
+ * @example
+ * ```ts
+ * type Person = {
+ *   [k: string]: unknown;
+ *   name: string;
+ *   age: number;
+ * }
+ *
+ * type KnownKeysOfPerson = KnownKeys<Person>;
+ * ```
+ */
+export type KnownKeys<T> = keyof ExcludeNever<
+  {
+    // @ts-ignore: ¯\_(ツ)_/¯
+    [K in keyof T]: `string` extends `${K}` ? never
+      // @ts-ignore: ¯\_(ツ)_/¯
+      : `number` extends `${K}` ? never
+      : K;
+  }
+>;
+
+/**
+ * Removes any index signature keys from the type T, returning
+ * a new type with only the known keys.
+ * @example
+ * ```ts
+ * type RawPerson = {
+ *   [k: string]: unknown;
+ *   name: string;
+ *   age: number;
+ * }
+ *
+ * type Person = RemoveIndex<RawPerson>; // { name: string; age: number; }
+ * ```
+ */
+export type RemoveIndex<T extends Record<SafeAny, SafeAny>> = Pick<
+  T,
+  KnownKeys<T>
+>;
 
 /* -------------------------------------------------------------------------- */
 /*                               Internal Types                               */
@@ -449,12 +495,18 @@ type DotNotationPathOf<T> = {
 type DotNotationDataTypeOf<
   T,
   P extends DotNotationPathOf<T> | string,
-> = P extends `${infer K}.${infer R}`
-  // @ts-ignore: ¯\_(ツ)_/¯
-  ? DotNotationDataTypeOf<T[K], R>
-  // @ts-ignore: ¯\_(ツ)_/¯
-  : P extends `${infer K}` ? K extends "$[elem]" ? T[number]
-      // @ts-ignore: ¯\_(ツ)_/¯
-    : T[K]
+> = P extends keyof T ? T[P]
+  : P extends `$[elem]` ? T extends Array<infer E> ? E
+    : never
+  : P extends `${number}` ? T extends Array<infer E> ? E
+    : never
+  : P extends `${infer First}.${infer Rest}`
+    ? First extends keyof T ? DotNotationDataTypeOf<T[First], Rest>
+    : First extends `${number}`
+      ? T extends Array<infer E> ? DotNotationDataTypeOf<E, Rest>
+      : never
+    : First extends `$[elem]`
+      ? T extends Array<infer E> ? DotNotationDataTypeOf<E, Rest>
+      : never
+    : never
   : never;
-// #endregion

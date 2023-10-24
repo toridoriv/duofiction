@@ -1,12 +1,14 @@
-import { BaseDocument, DocumentSchema } from "@modules/database/document.ts";
+import { BaseDocument } from "@modules/database/document.ts";
 import {
-  AnyArray,
+  AnyRecord,
+  DeepPartial,
   ExcludeNever,
   ExpandRecursively,
   FromDotNotation,
   GetKeys,
   IsNativeObject,
-  SafeAny,
+  KnownKeys,
+  RemoveIndex,
   ToDotNotation,
 } from "@modules/typings/utilities.ts";
 import { mongodb } from "@modules/database/deps.ts";
@@ -63,10 +65,12 @@ export type Projection<T> = CustomExpand<
 >;
 
 export namespace Query {
-  export interface Operators<T> extends mongodb.FilterOperators<T> {
-    $elemMatch?: T extends AnyArray ? Operators<T[number]> : never;
-    $not?: T extends string ? String<T> : Operators<T>;
-  }
+  export type Operators<T> = T extends Array<infer E>
+    ? BaseFilterOperators<T> & { $elemMatch: Operators<E> }
+    : T extends string | RegExp ? BaseFilterOperators<T | RegExp> & {
+        $not: T extends string | RegExp ? string | RegExp : Operators<T>;
+      }
+    : BaseFilterOperators<T>;
 
   export interface FindOptions<T extends BaseDocument> extends BaseFindOptions {
     projection?: Projection<T>;
@@ -92,13 +96,14 @@ export namespace Query {
       : T
     : T;
 
-  export type Property<T> = T extends string ? String<T> : T;
+  export type Property<T> = T extends string ? T | RegExp
+    : T extends AnyRecord ? DeepPartial<T>
+    : T;
 
-  export type Base<T extends DocumentSchema<SafeAny>> = {
-    [K in keyof T]: Property<T[K]> | Operators<T[K]>;
+  export type Base<T, Dot extends ToDotNotation<T> = ToDotNotation<T>> = {
+    [K in keyof Dot]?: Property<Dot[K]> | Operators<Dot[K]>;
   };
 
-  type String<T extends string> = T | RegExp;
   type ExcludeFromFindOptions = "projection";
   type ExcludeFromUpdateOptions = "projection";
   type ExcludeFromUpdate = never;
@@ -120,15 +125,25 @@ export namespace Query {
 
   type BaseUpdate<T extends BaseDocument> = {
     [
-      K in keyof mongodb.UpdateFilter<ToDotNotation<T>> as K extends
-        ExcludeFromUpdate ? never
-        : K
-    ]: mongodb.UpdateFilter<ToDotNotation<T>>[K];
+      K in keyof mongodb.UpdateFilter<
+        ToDotNotation<T>
+      > as K extends ExcludeFromUpdate ? never : K
+    ]: mongodb.UpdateFilter<
+      ToDotNotation<T>
+    >[K];
   };
+
+  type OmitFromFilter = "$not" | KnownKeys<mongodb.NonObjectIdLikeDocument>;
+
+  type BaseFilterOperators<T> = RemoveIndex<
+    {
+      [
+        K in keyof mongodb.FilterOperators<T> as K extends OmitFromFilter
+          ? never
+          : K
+      ]?: mongodb.FilterOperators<T>[K];
+    }
+  >;
 }
 
-export type Query<T extends DocumentSchema<SafeAny>> = Partial<
-  ToDotNotation<
-    Query.Base<T>
-  >
->;
+export type Query<T> = DeepPartial<Query.Base<T>>;
