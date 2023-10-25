@@ -16,6 +16,7 @@ Deno.test("Handlers on close event of DatabaseClient", async () => {
   await utils.runStep(() => client.close());
 
   utils.expect(infoMessages[1]).to.equal("Disconnected from the database.");
+  utils.expect(infoMessages.length).to.equal(2);
 });
 
 Deno.test("Register a collection on DatabaseClient", async () => {

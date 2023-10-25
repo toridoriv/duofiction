@@ -1,5 +1,8 @@
-import { BaseDocument } from "@modules/database/document.ts";
-import {
+import type {
+  BaseDocument,
+  MongoDocument,
+} from "@modules/database/document.ts";
+import type {
   AnyRecord,
   DeepPartial,
   ExcludeNever,
@@ -11,7 +14,7 @@ import {
   RemoveIndex,
   ToDotNotation,
 } from "@modules/typings/utilities.ts";
-import { mongodb } from "@modules/database/deps.ts";
+import type { mongodb } from "@modules/database/deps.ts";
 
 type CustomExpand<T> = ExpandRecursively<T, Date | mongodb.UUID>;
 
@@ -72,8 +75,11 @@ export namespace Query {
       }
     : BaseFilterOperators<T>;
 
-  export interface FindOptions<T extends BaseDocument> extends BaseFindOptions {
+  export interface FindOptions<T> extends BaseFindOptions {
     projection?: Projection<T>;
+    sort?: {
+      [K in keyof (T & MongoDocument)]?: mongodb.SortDirection;
+    };
   }
 
   export type Update<T extends BaseDocument> = BaseUpdate<T> & {
@@ -100,11 +106,13 @@ export namespace Query {
     : T extends AnyRecord ? DeepPartial<T>
     : T;
 
-  export type Base<T, Dot extends ToDotNotation<T> = ToDotNotation<T>> = {
-    [K in keyof Dot]?: Property<Dot[K]> | Operators<Dot[K]>;
-  };
+  export type Base<T, Dot extends ToDotNotation<T> = ToDotNotation<T>> =
+    & {
+      [K in keyof Dot]?: Property<Dot[K]> | Operators<Dot[K]>;
+    }
+    & { $expr?: { $gt?: string[] } };
 
-  type ExcludeFromFindOptions = "projection";
+  type ExcludeFromFindOptions = "projection" | "sort";
   type ExcludeFromUpdateOptions = "projection";
   type ExcludeFromUpdate = never;
 

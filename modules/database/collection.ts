@@ -1,12 +1,13 @@
 import { mongodb } from "@modules/database/deps.ts";
 import {
-  BaseDocument,
+  type BaseDocument,
   createDocument,
   createDocuments,
-  DocumentSchema,
-  MongoDocument,
+  type DocumentSchema,
+  type MongoDocument,
 } from "@modules/database/document.ts";
-import { Query } from "@modules/database/queries.ts";
+import type { Query } from "@modules/database/queries.ts";
+import type { ToDotNotation } from "@modules/typings/mod.ts";
 
 export type Collection<T extends BaseDocument> = ReturnType<
   typeof createCollection<T>
@@ -18,6 +19,7 @@ export function createCollection<T extends BaseDocument>(
   type CollectionDocument = DocumentSchema<T>;
   type CollectionQuery = Query<CollectionDocument>;
   type FindOptions = Query.FindOptions<T>;
+  type DocumentInDotNotation = ToDotNotation<CollectionDocument>;
 
   const $collection = collection as unknown as mongodb.Collection<
     MongoDocument
@@ -26,6 +28,7 @@ export function createCollection<T extends BaseDocument>(
   function findById<O extends FindOptions>(id: string, options?: O) {
     return $collection.findOne(
       { _id: new mongodb.UUID(id) },
+      // @ts-ignore: ¯\_(ツ)_/¯
       options,
     ) as Promise<Query.InferFindReturn<CollectionDocument, O> | null>;
   }
@@ -34,6 +37,7 @@ export function createCollection<T extends BaseDocument>(
     query: Q,
     options?: O,
   ) {
+    // @ts-ignore: ¯\_(ツ)_/¯
     return $collection.findOne(query, options) as Promise<
       Query.InferFindReturn<
         CollectionDocument,
@@ -46,6 +50,7 @@ export function createCollection<T extends BaseDocument>(
     query: Q,
     options?: O,
   ) {
+    // @ts-ignore: ¯\_(ツ)_/¯
     return $collection.find(query, options) as mongodb.FindCursor<
       Query.InferFindReturn<CollectionDocument, O>
     >;
@@ -91,15 +96,19 @@ export function createCollection<T extends BaseDocument>(
       options = {} as O;
     }
 
-    return $collection.findOneAndUpdate({ _id: new mongodb.UUID(id) }, {
-      $set: { updated_at: new Date() },
-      ...update as mongodb.UpdateFilter<MongoDocument>,
-    }, { returnDocument: "after", upsert: false, ...options }) as Promise<
-      Query.InferFindReturn<
-        CollectionDocument,
-        O
-      > | null
-    >;
+    return $collection.findOneAndUpdate(
+      { _id: new mongodb.UUID(id) },
+      {
+        $set: { updated_at: new Date() },
+        ...(update as mongodb.UpdateFilter<MongoDocument>),
+      },
+      { returnDocument: "after", upsert: false, ...options },
+    ) as Promise<Query.InferFindReturn<CollectionDocument, O> | null>;
+  }
+
+  function distinct<K extends keyof DocumentInDotNotation>(key: K) {
+    // @ts-ignore: ¯\_(ツ)_/¯
+    return $collection.distinct(key) as Promise<DocumentInDotNotation[K][]>;
   }
 
   return {
@@ -109,6 +118,7 @@ export function createCollection<T extends BaseDocument>(
     countDocuments,
     deleteById,
     deleteMany,
+    distinct,
     find,
     findById,
     findOne,
