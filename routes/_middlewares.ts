@@ -21,8 +21,7 @@ const inspectRequest = defineMiddleware(
 
 const handleNotFound = defineMiddleware(
   function handleNotFound(req, res, _next) {
-    res.app.logger.debug("Handling not found error...");
-    return res.status(404).send(`Cannot ${req.method} ${req.url}`);
+    return res.status(404).render("error-not-found", { path: req.url });
   },
   1,
 );
