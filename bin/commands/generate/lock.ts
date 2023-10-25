@@ -14,9 +14,14 @@ const LockCommand = new CliffyCommand.Command()
     "Use this option to remove all previous cache.",
     { default: false },
   )
+  .option(
+    "-d, --development [development:boolean]",
+    "Include development dependencies.",
+    { default: false },
+  )
   .action(function main(options) {
     removeOldLockFile();
-    const paths = getDependencyFilePaths(false);
+    const paths = getDependencyFilePaths(options.development);
 
     if (options.clean) {
       removePreviousCache();

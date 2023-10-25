@@ -46,16 +46,18 @@ export function getDependencyFilePaths(isDevelopment: boolean) {
     /modules\/.*\.d\.ts/,
   ];
   const skip: RegExp[] = [/node_modules/, /deno\/npm\/registry/];
+  const exts: string[] = [".ts"];
 
   if (isDevelopment) {
     match.push(/prettier\.config/, /scripts\.config/);
+    exts.push(".mjs");
   } else {
     skip.push(/bin\//);
   }
 
   const options: WalkOptions = {
     includeDirs: false,
-    exts: [".ts"],
+    exts,
     match,
     skip,
   };
